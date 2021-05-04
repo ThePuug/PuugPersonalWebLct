@@ -13,8 +13,16 @@ module.exports = {
       },
     },
     "gatsby-plugin-mdx",
+    { 
+      resolve: "gatsby-plugin-less",
+      options: {
+        javascriptEnabled: true
+      }
+    },
     "gatsby-plugin-sharp",
+    "gatsby-plugin-antd",
     "gatsby-transformer-sharp",
+    "gatsby-transformer-remark",
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -31,11 +39,13 @@ module.exports = {
       },
       __key: "pages",
     },
-    { 
-      resolve: "gatsby-plugin-antd",
+    {
+      resolve: "gatsby-source-filesystem",
       options: {
-        style: true
-      }
-    }
+        name: "events",
+        path: "./src/events/",
+      },
+      __key: "events",
+    },
   ],
 };
