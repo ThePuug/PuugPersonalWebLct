@@ -31,5 +31,11 @@ module.exports = {
       },
       __key: "pages",
     },
+    { 
+      resolve: "gatsby-plugin-antd",
+      options: {
+        style: true
+      }
+    }
   ],
 };
