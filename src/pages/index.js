@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import { graphql } from "gatsby"
-import { Card, Col, Pagination, Row, Typography } from "antd"
+import { Card, Col, Pagination, Row, Space, Typography } from "antd"
+import {} from "@ant-design/icons"
 import { getImage, GatsbyImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
-import useWindowSize from "../hooks/useWindowSize"
+import useWindowSize from "../components/useWindowSize"
 const { Link, Paragraph, Title } = Typography
 
 const Page = ({ data }) => {
@@ -41,10 +42,10 @@ const Page = ({ data }) => {
               timeDescription: 'starting at ' +  date.toFormat('h:mma ZZZZ')}}})
       }).sort((a,b) => { return a.frontmatter.date - b.frontmatter.date })
   const [eventPage,setEventPage] = useState(1)
-  const pageSize = (windowSize.width >= 768 ? 6 : windowSize.width >= 576 ? 4 : 2)
+  const pageSize = (windowSize.width >= 992 ? 6 : windowSize.width >= 576 ? 4 : 2)
   const currentEvents = events.slice( (eventPage-1)*pageSize, eventPage*pageSize)
   const renderEvents = currentEvents.map((event, i) => (
-      <Col xs={24} sm={12} md={8} key={"event-"+i}>
+      <Col xs={24} sm={12} lg={8} xl={8} key={"event-"+i}>
         <Link href={event.frontmatter.slug}>
           <Card>
             <GatsbyImage image={getImage(event.frontmatter.image)} alt={event.frontmatter.title} />
@@ -63,12 +64,14 @@ const Page = ({ data }) => {
 
   return (
     <>
-      <Row gutter={16}>
-        { renderEvents }
-      </Row>
-      <Row wrap={false} align="center">
-        <Pagination current={eventPage} total={events.length} pageSize={pageSize} onChange={(pg) => {setEventPage(pg)}} />
-      </Row>
+      <Space direction="vertical">
+        <Row gutter={16} className="events card-deck">
+          { renderEvents }
+        </Row>
+        <Row wrap={false} align="center">
+          <Pagination current={eventPage} total={events.length} pageSize={pageSize} onChange={(pg) => {setEventPage(pg)}} />
+        </Row>
+      </Space>
     </>
   )
 }

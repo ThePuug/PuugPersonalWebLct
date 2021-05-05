@@ -1,0 +1,58 @@
+body .ant-layout-header {
+  height: auto;
+  line-height: inherit;
+  background-color:#fff8;
+}
+.menu-container .ant-card-body {
+  display:flex;
+  align-items:center;
+  padding-top:.5em;
+  padding-bottom:.5em;
+}
+
+body .ant-layout-header, 
+body .ant-layout-content {
+  padding: 0 16px 16px;  
+}
+body .ant-layout-header > *,
+body .ant-layout-footer > *,
+body .ant-layout-content > * {
+  max-width:1199px;
+  margin:0 auto;
+}
+
+@media(min-width:992px) {
+  body .ant-layout-header,
+  body .ant-layout-content {
+    padding: 0 50px 16px;
+  }
+}
+
+@media(min-width:768px) {
+  body .ant-layout-header .ant-row-space-around {
+    justify-content: flex-start;
+  }
+}
+
+.card-deck .ant-card {
+  border:none;
+  background:none;
+}
+.card-deck {
+  row-gap:16px !important;
+  margin-left: -8px !important;
+  margin-right: -8px !important;
+}
+.card-deck > .ant-col {
+  padding-left:8px !important;
+  padding-right:8px !important;
+  display: flex;
+  align-items: stretch;
+}
+.card-deck .ant-col > .ant-card,
+.card-deck .ant-col > a {
+  background-color:#fffa;
+  border-color:#0004;
+  box-shadow:1px 1px 8px #0004;
+  width:100%;
+}
