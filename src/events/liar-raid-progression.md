@@ -1,14 +1,14 @@
 ---
-slug: /events/liar-led-raid
-title: "[Liar] Led Alliance Raids"
-date: "2021-05-05T20:00:00"
+slug: /events/liar-raid-progression
+title: "[Liar] Raid Progression"
+date: "2021-05-08T15:00:00"
 repeat: 
   frequency: week
   interval: 1
   byWeekDays: 
-    - wednesday
-description: "@Hokk leads casual/training raids on the alliance discord"
-image: ../images/raid.jpg
+    - saturday
+description: "@Lucky leads us to take down each raid boss one at a time. New raiders welcome, but please talk to Lucky to help get set up."
+image: ../images/raid-progression.jpg
 ---
 
 # \[Liar\] Raid Breakdown
