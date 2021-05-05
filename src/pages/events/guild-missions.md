@@ -8,5 +8,5 @@ repeat:
   byWeekDays: 
     - sunday
 description: "Join @Astral and @IceMage on Sundays for some casual guild fun as we work together to complete puzzles, races, bounties and more!"
-image: ../images/missions.jpg
+image: ../../images/missions.jpg
 ---

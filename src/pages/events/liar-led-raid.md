@@ -8,7 +8,7 @@ repeat:
   byWeekDays: 
     - wednesday
 description: "@Hokk leads casual/training raids on the alliance discord"
-image: ../images/raid.jpg
+image: ../../images/raid.jpg
 ---
 
 # \[Liar\] Raid Breakdown

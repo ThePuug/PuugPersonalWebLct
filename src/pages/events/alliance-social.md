@@ -8,5 +8,5 @@ repeat:
   byWeekDays: 
     - saturday
 description: "Every other week, we gather on AoL discord to meet new and old friends for a casual social night. Sometimes there are even giveaways and in-game events! Speak with an AoL rep for more info: @FearMy, @Ischa, or @Ebo"
-image: ../images/social-night.jpg
+image: ../../images/social-night.jpg
 ---

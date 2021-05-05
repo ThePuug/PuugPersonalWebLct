@@ -1,17 +1,17 @@
 import React, { useState } from "react"
 import { graphql } from "gatsby"
-import { Card, Col, Pagination, Row, Space, Typography } from "antd"
-import {} from "@ant-design/icons"
+import { Card, Col, Collapse, Pagination, Row, Space, Typography } from "antd"
 import { getImage, GatsbyImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
 import useWindowSize from "../components/useWindowSize"
 const { Link, Paragraph, Title } = Typography
+const { Panel } = Collapse
 
 const Page = ({ data }) => {
   const windowSize = useWindowSize()
-  const events = data.allMarkdownRemark.edges
-      .flatMap(({ node: event }) => {
+  const events = data.events.edges
+      .flatMap(({node: event}) => {
         const after = DateTime.fromISO(DateTime.now().toString()).startOf('day')
         const before = after.plus({weeks: 2})
         const start = DateTime.fromISO(event.frontmatter.date)
@@ -44,40 +44,49 @@ const Page = ({ data }) => {
   const [eventPage,setEventPage] = useState(1)
   const pageSize = (windowSize.width >= 992 ? 6 : windowSize.width >= 576 ? 4 : 2)
   const currentEvents = events.slice( (eventPage-1)*pageSize, eventPage*pageSize)
-  const renderEvents = currentEvents.map((event, i) => (
-      <Col xs={24} sm={12} lg={8} xl={8} key={"event-"+i}>
-        <Link href={event.frontmatter.slug}>
-          <Card>
-            <GatsbyImage image={getImage(event.frontmatter.image)} alt={event.frontmatter.title} />
-            <Title level={4}>
-              {event.frontmatter.title}
-            </Title>
-            <Title level={5}>
-              {event.frontmatter.dateDescription}<br />{event.frontmatter.timeDescription}
-            </Title>
-            <Paragraph>{event.frontmatter.description}</Paragraph>
-          </Card>
-        </Link>
-      </Col>
-    )
-  )
 
   return (
     <>
-      <Space direction="vertical">
-        <Row gutter={16} className="events card-deck">
-          { renderEvents }
-        </Row>
-        <Row wrap={false} align="center">
-          <Pagination current={eventPage} total={events.length} pageSize={pageSize} onChange={(pg) => {setEventPage(pg)}} />
-        </Row>
-      </Space>
+      <div className="section">
+        <Space direction="vertical">
+          <Row gutter={16} className="events card-deck">
+            { currentEvents.map((event, i) => (
+              <Col xs={24} sm={12} lg={8} xl={8} key={"event-"+i}>
+                <Link href={event.frontmatter.slug}>
+                  <Card>
+                    <GatsbyImage image={getImage(event.frontmatter.image)} alt={event.frontmatter.title} style={{height:"220px"}} />
+                    <Title level={4}>
+                      {event.frontmatter.title}
+                    </Title>
+                    <Title level={5}>
+                      {event.frontmatter.dateDescription}<br />{event.frontmatter.timeDescription}
+                    </Title>
+                    <Paragraph>{event.frontmatter.description}</Paragraph>
+                  </Card>
+                </Link>
+              </Col>
+            ))}
+          </Row>
+          <Row wrap={false} align="center">
+            <Pagination current={eventPage} total={events.length} pageSize={pageSize} onChange={(pg) => {setEventPage(pg)}} />
+          </Row>
+        </Space>
+      </div>
+      <div className="section">
+        <Collapse>
+          { data.howWeOperate.edges.map(({node: it}, i) => (
+            <Panel header={it.frontmatter.title} key={"howWeOperate-"+i}>
+              <div dangerouslySetInnerHTML={{ __html: it.html }}/>
+            </Panel>
+          ))}
+        </Collapse>
+      </div>
     </>
   )
 }
 
 export const pageQuery = graphql`query {
-  allMarkdownRemark {
+  events: allMarkdownRemark(filter: {frontmatter: {slug: {regex: "/^\/events\/"}}}) {
     edges {
       node {
         id
@@ -96,6 +105,21 @@ export const pageQuery = graphql`query {
               gatsbyImageData(layout: CONSTRAINED)
             }
           }
+        }
+      }
+    }
+  }
+  howWeOperate: allMarkdownRemark(
+    filter: {frontmatter: {slug: {regex: "/^\/how-we-operate\/"}}}
+    sort: {fields: frontmatter___order}
+  ) {
+    edges {
+      node {
+        id
+        html
+        frontmatter {
+          slug
+          title
         }
       }
     }

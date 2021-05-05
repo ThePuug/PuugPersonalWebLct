@@ -8,7 +8,7 @@ repeat:
   byWeekDays: 
     - saturday
 description: "@Lucky leads us to take down each raid boss one at a time. New raiders welcome, but please talk to Lucky to help get set up."
-image: ../images/raid-progression.jpg
+image: ../../images/raid-progression.jpg
 ---
 
 # \[Liar\] Raid Breakdown

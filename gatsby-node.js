@@ -2,12 +2,10 @@ const path = require("path")
 
 exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions
-  const template = path.resolve(`src/templates/event.js`)
+  const template = path.resolve(`src/templates/events.js`)
   const result = await graphql(`
     {
-      allMarkdownRemark(
-        limit: 1000
-      ) {
+      allMarkdownRemark(filter: {frontmatter: {slug: {regex: "/^\/events\/"}}}) {
         edges {
           node {
             frontmatter {

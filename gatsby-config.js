@@ -42,9 +42,17 @@ module.exports = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "events",
-        path: "./src/events/",
+        path: "./src/pages/events/",
       },
       __key: "events",
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "how-we-operate",
+        path: "./src/data/how-we-operate/",
+      },
+      __key: "how-we-operate",
     },
   ],
 };
