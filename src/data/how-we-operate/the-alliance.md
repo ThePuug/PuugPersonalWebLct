@@ -1,6 +1,0 @@
----
-slug: /how-we-operate/the-alliance
-title: The Alliance
-order: 3
----
-Since \[Liar\] was formed back in the days of Guild Wars 1, we were a part of the old alliance system which allowed a group of guilds to ally together for in-game activities and chat. And while the GW2 alliance system is still in development, we've stuck to our roots as part of alliances with both \[AoL\] Army of Lightness and \[RLR\] The Lords of Dragonheart. Together, we assemble multiple times weekly for events that members from all these guilds are invited to participate in. Currently we participate in several varying PvE alliance events, which focus on community building and different in-game activities. We also run several weekly raid and raid training groups. \[Liar\] members are welcome to join up on \[AoL\]'s discord and \[RLR\]'s teamspeak servers for these events as well as general socializing. We additionally have welcomed Knights of the Silver Chalice \[KSC\] to the alliance, and do raid training and other things with them.

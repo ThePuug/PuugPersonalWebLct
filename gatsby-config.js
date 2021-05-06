@@ -12,7 +12,7 @@ module.exports = {
       },
     },
     "gatsby-plugin-mdx",
-    { 
+    {
       resolve: "gatsby-plugin-less",
       options: {
         javascriptEnabled: true
@@ -21,14 +21,12 @@ module.exports = {
     "gatsby-plugin-sharp",
     "gatsby-plugin-antd",
     "gatsby-transformer-sharp",
-    "gatsby-transformer-remark",
     {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "images",
         path: "./src/images/",
       },
-      __key: "images",
     },
     {
       resolve: "gatsby-source-filesystem",
@@ -36,23 +34,13 @@ module.exports = {
         name: "pages",
         path: "./src/pages/",
       },
-      __key: "pages",
     },
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        name: "events",
-        path: "./src/pages/events/",
+        name: "content",
+        path: "./src/content/",
       },
-      __key: "events",
-    },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "how-we-operate",
-        path: "./src/data/how-we-operate/",
-      },
-      __key: "how-we-operate",
     },
   ],
 };

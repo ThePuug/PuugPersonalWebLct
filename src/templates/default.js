@@ -1,19 +1,52 @@
 import React from "react"
+import styled from "styled-components"
 import { Link } from "gatsby"
 import { Col, Layout, Row, Space } from "antd"
 import { StaticImage } from "gatsby-plugin-image"
 const { Content, Header } = Layout
 
-const CustomLayout = ({children}) => {
-  return <Layout>
-    <Header>
+const StyledContent = styled(Content)`
+  padding: 0 16px;
+  > * {
+    max-width: 1199px;
+    margin: 0 auto;
+  }  
+  @media (min-width: 992px) {
+    padding: 0 50px;
+  }
+`
+
+const StyledHeader = styled(Header)`
+  height:auto;
+  line-height:inherit;
+  background-color:#fff8;
+  padding: 0 16px;
+  > * {
+    max-width: 1199px;
+    margin: 0 auto;
+  }
+  @media (min-width: 992px) {
+    padding: 0 50px;
+  }
+  @media (min-width: 768px) {
+    .ant-row-space-around {
+      justify-content: flex-start;
+    }
+  }
+`
+
+const CustomLayout = ({ children }) => {
+  return <Space direction="vertical">
+    <StyledHeader>
       <div>
         <Row align="space-between" justify="middle" gutter={16}>
           <Col xs={24} sm={24} md={16}>
-            <StaticImage src="../images/logo.png" alt="Liars, Cheats, and Thieves" placeholder="blurred" />
+            <Link to="/">
+              <StaticImage src="../images/logo.png" alt="Liars, Cheats, and Thieves" placeholder="blurred" />
+            </Link>
           </Col>
           <Col xs={24} sm={24} md={8} className="menu-container">
-            <Row align="space-around" gutter={16}>
+            <Row align="space-around" gutter={16} style={{ paddingTop: "1em" }}>
               <Col>
                 <Space direction="horizontal">
                   <StaticImage src="../images/discord-brands.svg" alt="discord" width={36} />
@@ -30,9 +63,9 @@ const CustomLayout = ({children}) => {
           </Col>
         </Row>
       </div>
-    </Header>
-    <Content>{children}</Content>
-  </Layout>
+    </StyledHeader>
+    <StyledContent>{children}</StyledContent>
+  </Space>
 };
 
 export default CustomLayout;
