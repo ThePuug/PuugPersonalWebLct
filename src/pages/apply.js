@@ -47,7 +47,7 @@ const Page = ({ data }) => {
     .filter(([tz, v]) => Array.isArray(v) && DateTime.local().setZone(tz).isValid)
     .map(([tz, _]) => {
       const dt = dto.setZone(tz)
-      return [tz, dt.zoneName.replaceAll('_', ' '), dt.toFormat('Z'), dt.isInDST]
+      return [tz, dt.zoneName.replace(/_/g,' '), dt.toFormat('Z'), dt.isInDST]
     })
     .map(([tz, zone, offset, dst]) => <Option key={tz} value={`[UTC${offset}] ${zone}${dst ? " (DST)" : ""}`}>{zone}</Option>)
 
