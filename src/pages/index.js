@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import useWindowSize from "../hooks/useWindowSize"
 import styled from "styled-components"
+import Section from "../components/section"
 import { graphql } from "gatsby"
-import { Card, Col, Collapse, Pagination, Row, Space, Typography } from "antd"
+import { Card, Col, Collapse, Layout, Pagination, Row, Space, Typography } from "antd"
 import { getImage, GatsbyImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
@@ -10,6 +11,7 @@ import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 const { Panel } = Collapse
 const { Link, Paragraph, Title } = Typography
+const { Content } = Layout
 
 const shortcodes = { Collapse, Link, Panel }
 
@@ -85,8 +87,8 @@ const Page = ({ data }) => {
   const currentEvents = events.slice((eventPage - 1) * pageSize, eventPage * pageSize)
 
   return (
-    <Space direction="vertical">
-      <div className="section">
+    <Content>
+      <Section>
         <Space direction="vertical">
           <CardDeck gutter={16}>
             {currentEvents.map((event, i) => {
@@ -110,15 +112,15 @@ const Page = ({ data }) => {
             <Pagination current={eventPage} total={events.length} pageSize={pageSize} onChange={(pg) => { setEventPage(pg) }} />
           </Row>
         </Space>
-      </div>
-      <div>
+      </Section>
+      <Section>
         <MDXProvider components={shortcodes}>
           <MDXRenderer>
             {data.mdx.body}
           </MDXRenderer>
         </MDXProvider>
-      </div>
-    </Space>
+      </Section>
+    </Content>
   )
 }
 
