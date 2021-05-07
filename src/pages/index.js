@@ -28,9 +28,9 @@ const CardDeck = styled(Row)`
   .ant-col > a {
     width: 100%;
     border: solid 1px #0004;
+    background-color: #fffc;
   }
   .ant-col > .ant-card {
-    background-color: #fffa;
     box-shadow:1px 1px 3px #0004
   }
   .ant-col > a {
@@ -83,7 +83,7 @@ const Page = ({ data }) => {
 
   return (
     <Content>
-      <Section>
+      <Section transparent>
         <Space direction="vertical">
           <CardDeck gutter={16}>
             {currentEvents.map((event, i) => {
@@ -108,7 +108,7 @@ const Page = ({ data }) => {
           </Row>
         </Space>
       </Section>
-      <MdxSection>{data.mdx.body}</MdxSection>
+      <MdxSection transparent>{data.mdx.body}</MdxSection>
     </Content>
   )
 }

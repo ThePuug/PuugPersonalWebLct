@@ -1,16 +1,16 @@
 import React from "react"
-import { Section } from "./custom"
+import Section from "./section"
 import { Typography } from "antd"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import { shortcodes } from "./default"
+import { shortcodes } from "../templates/default"
 
-const Component = ({ children }) => {
-  return <Section>
+const Component = (props) => {
+  return <Section {...props}>
     <Typography>
       <MDXProvider components={shortcodes}>
         <MDXRenderer>
-          {children}
+          {props.children}
         </MDXRenderer>
       </MDXProvider>
     </Typography>

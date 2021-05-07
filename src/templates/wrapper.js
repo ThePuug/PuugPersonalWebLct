@@ -1,30 +1,24 @@
 import React from "react"
 import styled from "styled-components"
+import { Section } from "../components/custom"
 import { Link } from "gatsby"
 import { Col, Layout, Row, Space, Typography } from "antd"
 import { StaticImage } from "gatsby-plugin-image"
 const { Header } = Layout
 const { Text } = Typography
 
-const StyledLayout = styled(Layout)`
-  width:100%
+const CoverLayout = styled(Layout)`
+  width:100%;
   display:block;
+  background:none;
 `
 
 const StyledHeader = styled(Header)`
   height:auto;
   line-height:inherit;
   background:none;
-  max-width: 1199px;
-  margin: 0 auto;
-  padding: 0 16px;
-  > * {
-    max-width: 1199px;
-    margin: 0 auto;
-  }
-  @media (min-width: 992px) {
-    padding: 0 50px;
-  }
+  padding:0;
+  margin:0;
   @media (min-width: 768px) {
     .ant-row-space-around {
       justify-content: flex-start;
@@ -32,19 +26,35 @@ const StyledHeader = styled(Header)`
   }
 `
 
-const CustomLayout = ({ children }) => {
+const HeaderSection = styled(Section)`
+  padding-bottom: 0px;
+`
+
+const HeaderLinks = styled(Col)`
+  background-color:#fffc;
+  padding-top:.6em;
+  padding-bottom:.2em;
+  vertical-align:middle;
+  border-radius:.33rem;
+  margin:.2em 0 1em;
+  @media (min-width: 768px) {
+    margin-bottom:.2em;
+  }
+`
+
+const Template = ({ children }) => {
   return (
-    <StyledLayout>
+    <CoverLayout>
       <StyledHeader>
-        <div>
-          <Row align="space-between" justify="middle" gutter={16}>
+        <HeaderSection transparent>
+          <Row align="space-between" justify="middle" gutter={[16,0]}>
             <Col xs={24} sm={24} md={16}>
               <Link to="/">
                 <StaticImage src="../images/logo.png" alt="Liars, Cheats, and Thieves" placeholder="blurred" />
               </Link>
             </Col>
-            <Col xs={24} sm={24} md={8} className="menu-container">
-              <Row align="space-around" gutter={16} style={{ paddingTop: "1em" }}>
+            <HeaderLinks xs={24} sm={24} md={8}>
+              <Row align="space-around" gutter={16}>
                 <Col>
                   <a href="https://discord.gg/rvENckg">
                     <Space direction="horizontal">
@@ -62,13 +72,13 @@ const CustomLayout = ({ children }) => {
                   </Link>
                 </Col>
               </Row>
-            </Col>
+            </HeaderLinks>
           </Row>
-        </div>
+        </HeaderSection>
       </StyledHeader>
-      <Layout>{children}</Layout>
-    </StyledLayout>
+      <Layout style={{background:"none"}}>{children}</Layout>
+    </CoverLayout>
   )
 };
 
-export default CustomLayout;
+export default Template;

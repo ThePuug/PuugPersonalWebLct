@@ -1,5 +1,5 @@
 import React from "react"
-import { Section } from "./custom"
+import { Section } from "../components/custom"
 import { Collapse, Layout, Typography } from "antd"
 import { MDXProvider } from "@mdx-js/react"
 const { Content } = Layout
@@ -9,17 +9,15 @@ const { Link, Paragraph, Title } = Typography
 const shortcodes = { Collapse, Link, Panel, Paragraph, Title }
 
 const Component = ({ children }) => {
-  return (
-    <Content>
-      <Section>
-        <Typography>
-          <MDXProvider components={shortcodes}>
-            {children}
-          </MDXProvider>
-        </Typography>
-      </Section>
-    </Content>
-  )
+  return <Content>
+    <Section>
+      <Typography>
+        <MDXProvider components={shortcodes}>
+          {children}
+        </MDXProvider>
+      </Typography>
+    </Section>
+  </Content>
 }
 
 export { shortcodes }
