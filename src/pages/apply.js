@@ -4,7 +4,7 @@ import Section from "../components/section"
 import tzdata from "tzdata"
 import axios from "axios"
 import { graphql } from "gatsby"
-import { Button, Card, Drawer, Form, Input, Layout, Radio, Result, Select, Typography } from "antd"
+import { Button, Card, Drawer, Form, Input, Layout, message, Radio, Result, Select, Typography } from "antd"
 import { AudioTwoTone, IdcardTwoTone, InteractionTwoTone, MenuUnfoldOutlined, MenuFoldOutlined, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { DateTime } from "luxon"
 
@@ -44,7 +44,7 @@ const StyledSelect = styled(Select)`
 const Page = ({ data }) => {
   const [visible, setVisible] = useState(true)
   const [detailQuestion, setDetailQuestion] = useState(null)
-  const [formAction, setFormAction] = useState({ action: "Send", disabled: false })
+  const [formAction, setFormAction] = useState({ action: "Apply now!", disabled: false })
   const dto = DateTime.local()
   const timezoneOptions = Object.entries(zones)
     .filter(([tz, v]) => Array.isArray(v) && DateTime.local().setZone(tz).isValid)
@@ -60,6 +60,7 @@ const Page = ({ data }) => {
       .then((res) => {
         setFormAction({ action: "sent", disabled: true })
       }).catch((ex) => {
+        message.error("Something went wrong, please try again.")
         setFormAction({ action: "Send", disabled: false })
       })
   }
@@ -146,7 +147,7 @@ const Page = ({ data }) => {
                 <Input size="large" maxLength={50} prefix={<QuestionCircleTwoTone />} />
               </Form.Item>
             }
-            <Button block type="primary" htmlType="submit">Apply now!</Button>
+            <Button block type="primary" htmlType="submit" disabled={formAction.disabled}>{formAction.action}</Button>
           </StyledForm>
         }
         {formAction.action === "sent" &&
