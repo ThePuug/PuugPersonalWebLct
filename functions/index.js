@@ -1,9 +1,16 @@
-const functions = require("firebase-functions");
+const { WebhookClient } = require("discord.js")
+const functions = require("firebase-functions")
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.apply = functions.https.onRequest((request, response) => {
+  const message = Object.entries(request.body).map(([e, v]) => `${e}: ${v}`).join('\n')
+  if(functions.config().runtime.env !== "production") 
+    return response.status(200).send(message)
+
+  new WebhookClient(functions.config().discord.webhook.id, functions.config().discord.webhook.token)
+    .send(message)
+    .then((_) => response.sendStatus(200))
+    .catch((err) => {
+      functions.logger.error(err)
+      response.status(err.code).send(err.response.body)
+    })
+});
