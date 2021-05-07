@@ -1,28 +1,18 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import Section from "../components/section"
 import tzdata from "tzdata"
 import axios from "axios"
+import { MdxSection, Section } from "../components/custom"
 import { graphql } from "gatsby"
 import { Button, Card, Drawer, Form, Input, Layout, message, Radio, Result, Select, Typography } from "antd"
-import { AudioTwoTone, IdcardTwoTone, InteractionTwoTone, MenuUnfoldOutlined, MenuFoldOutlined, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
+import { AudioTwoTone, IdcardTwoTone, InteractionTwoTone, MenuUnfoldOutlined, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { DateTime } from "luxon"
-
-import { MDXProvider } from "@mdx-js/react"
-import { MDXRenderer } from "gatsby-plugin-mdx"
-const shortcodes = {}
 
 const { zones } = tzdata
 const { TextArea } = Input
 const { Option } = Select
 const { Title } = Typography
 const { Content } = Layout
-
-const FoldIcon = styled(MenuFoldOutlined)`
-  color:#000d;
-  font-size: 2rem;
-  margin:-1rem;
-`
 
 const UnfoldIcon = styled(MenuUnfoldOutlined)`
   position: fixed;
@@ -42,8 +32,9 @@ const StyledSelect = styled(Select)`
 `
 
 const Page = ({ data }) => {
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   const [detailQuestion, setDetailQuestion] = useState(null)
+  const [viewed, setViewed] = useState(false)
   const [formAction, setFormAction] = useState({ action: "Apply now!", disabled: false })
   const dto = DateTime.local()
   const timezoneOptions = Object.entries(zones)
@@ -65,21 +56,29 @@ const Page = ({ data }) => {
       })
   }
 
+  const firstFocus = (e) => {
+    if (!viewed) {
+      setViewed(true)
+      setVisible(true)
+    }
+  }
+
+  const unfold = () => { 
+    setViewed(true)
+    setVisible(true)
+  }
+
   return (<>
-    <Drawer title="Access the application form by clicking the icon to the right!" visible={visible} placement="left" theme="light" onClose={() => setVisible(false)} closeIcon={<FoldIcon />} width="90%" contentWrapperStyle={{ maxWidth: 1199 }}>
-      <Typography>
-        <MDXProvider components={shortcodes}>
-          <MDXRenderer>
-            {data.mdx.body}
-          </MDXRenderer>
-        </MDXProvider>
-      </Typography>
+    <Drawer title="You can close this window at any time" visible={visible} placement="left" theme="light" width="90%"
+      onClose={() => setVisible(false)}
+      contentWrapperStyle={{ maxWidth: 1199 }}>
+        <MdxSection>{data.mdx.body}</MdxSection>
     </Drawer>
     <Content>
       <Section>
         <Title level={1} style={{ textAlign: "center" }}>Join us!</Title>
         {formAction.action !== "sent" &&
-          <StyledForm colon={false} onFinish={onFinish} onFinishFailed={() => { }} labelCol={{ span: 8 }}>
+          <StyledForm colon={false} onFinish={onFinish} onFinishFailed={() => { }} labelCol={{ span: 8 }} onFocus={firstFocus}>
             <Form.Item required={false} name="PreferredName" label="Preferred Name" rules={[
               { required: true, message: "This field is required." }]
             }>
@@ -157,7 +156,7 @@ const Page = ({ data }) => {
         }
       </Section>
     </Content>
-    {!visible && <UnfoldIcon onClick={() => setVisible(true)} />}
+    {!visible && <UnfoldIcon onClick={unfold} />}
   </>)
 }
 

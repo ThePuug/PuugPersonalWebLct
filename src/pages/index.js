@@ -1,19 +1,14 @@
 import React, { useState } from "react"
 import useWindowSize from "../hooks/useWindowSize"
 import styled from "styled-components"
-import Section from "../components/section"
+import { MdxSection, Section } from "../components/custom"
 import { graphql } from "gatsby"
-import { Card, Col, Collapse, Layout, Pagination, Row, Space, Typography } from "antd"
+import { Card, Col, Layout, Pagination, Row, Space, Typography } from "antd"
 import { getImage, GatsbyImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
-import { MDXProvider } from "@mdx-js/react"
-import { MDXRenderer } from "gatsby-plugin-mdx"
-const { Panel } = Collapse
 const { Link, Paragraph, Title } = Typography
 const { Content } = Layout
-
-const shortcodes = { Collapse, Link, Panel }
 
 const CardDeck = styled(Row)`
   row-gap: 16px !important;
@@ -113,13 +108,7 @@ const Page = ({ data }) => {
           </Row>
         </Space>
       </Section>
-      <Section>
-        <MDXProvider components={shortcodes}>
-          <MDXRenderer>
-            {data.mdx.body}
-          </MDXRenderer>
-        </MDXProvider>
-      </Section>
+      <MdxSection>{data.mdx.body}</MdxSection>
     </Content>
   )
 }
