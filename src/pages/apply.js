@@ -19,7 +19,8 @@ const { Content } = Layout
 
 const FoldIcon = styled(MenuFoldOutlined)`
   color:#000d;
-  font-size: 4rem;
+  font-size: 2rem;
+  margin:-1rem;
 `
 
 const UnfoldIcon = styled(MenuUnfoldOutlined)`
@@ -52,7 +53,7 @@ const Page = ({ data }) => {
     .map(([tz, zone, offset, dst]) => <Option key={tz} value={`[UTC${offset}] ${zone}${dst ? " (DST)" : ""}`}>{zone}</Option>)
 
   return (<>
-    <Drawer visible={visible} placement="left" theme="light" onClose={() => setVisible(false)} closeIcon={<FoldIcon />} width="90%">
+    <Drawer title="Access the application form by clicking the icon to the right!" visible={visible} placement="left" theme="light" onClose={() => setVisible(false)} closeIcon={<FoldIcon />} width="90%" contentWrapperStyle={{maxWidth:1199}}>
       <Typography>
         <MDXProvider components={shortcodes}>
           <MDXRenderer>
