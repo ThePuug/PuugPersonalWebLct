@@ -4,7 +4,7 @@ import Section from "../components/section"
 import tzdata from "tzdata"
 import { graphql } from "gatsby"
 import { Button, Drawer, Form, Input, Layout, Radio, Select, Typography } from "antd"
-import { AudioTwoTone, IdcardTwoTone, MenuUnfoldOutlined, MenuFoldOutlined, QuestionCircleTwoTone, SkinTwoTone } from '@ant-design/icons';
+import { AudioTwoTone, IdcardTwoTone, InteractionTwoTone, MenuUnfoldOutlined, MenuFoldOutlined, QuestionCircleTwoTone, SkinTwoTone } from '@ant-design/icons';
 import { DateTime } from "luxon"
 
 import { MDXProvider } from "@mdx-js/react"
@@ -47,7 +47,7 @@ const Page = ({ data }) => {
     .filter(([tz, v]) => Array.isArray(v) && DateTime.local().setZone(tz).isValid)
     .map(([tz, _]) => {
       const dt = dto.setZone(tz)
-      return [tz, dt.zoneName.replace(/_/g,' '), dt.toFormat('Z'), dt.isInDST]
+      return [tz, dt.zoneName.replace(/_/g, ' '), dt.toFormat('Z'), dt.isInDST]
     })
     .map(([tz, zone, offset, dst]) => <Option key={tz} value={`[UTC${offset}] ${zone}${dst ? " (DST)" : ""}`}>{zone}</Option>)
 
@@ -63,12 +63,17 @@ const Page = ({ data }) => {
     </Drawer>
     <Content>
       <Section>
-        <Title level={1} style={{textAlign:"center"}}>Join us!</Title>
+        <Title level={1} style={{ textAlign: "center" }}>Join us!</Title>
         <StyledForm colon={false} onFinish={() => { }} onFinishFailed={() => { }} labelCol={{ span: 8 }}>
           <Form.Item required={false} name="PreferredName" label="Preferred Name" rules={[
             { required: true, message: "This field is required." }]
           }>
             <Input size="large" placeholder="What should others call you by" maxLength={50} prefix={<SkinTwoTone />} />
+          </Form.Item>
+          <Form.Item required={false} name="PreferredPronouns" label="Preferred Pronouns" rules={[
+            { required: true, message: "This fields is required." }
+          ]}>
+            <Input size="large" placeholder="He / She / Sie / They" maxLength={15} prefix={<InteractionTwoTone />} />
           </Form.Item>
           <Form.Item required={false} name="Gw2AccountId" label="GW2 Account ID" rules={[
             { required: true, message: "This field is required." },
