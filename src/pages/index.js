@@ -2,12 +2,14 @@ import React, { useState } from "react"
 import useWindowSize from "../hooks/useWindowSize"
 import styled from "styled-components"
 import { MdxSection, Section } from "../components/custom"
-import { graphql } from "gatsby"
-import { Card, Col, Layout, Pagination, Row, Space, Typography } from "antd"
+import { graphql, Link } from "gatsby"
+import { Avatar, Card, Col, Layout, Pagination, Row, Space, Typography } from "antd"
+import { ReadOutlined } from "@ant-design/icons"
 import { getImage, GatsbyImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
-const { Link, Paragraph, Title } = Typography
+const { Text } = Typography
+const { Meta } = Card
 const { Content } = Layout
 
 const CardDeck = styled(Row)`
@@ -23,18 +25,43 @@ const CardDeck = styled(Row)`
   .ant-card {
     border: none;
     background: none;
+    display:flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    .ant-card-body {
+      flex-grow:1;
+    }
+    .ant-card-meta-description {
+      color:#000d;
+    }
   }
   .ant-col > .ant-card,
   .ant-col > a {
     width: 100%;
-    border: solid 1px #0004;
     background-color: #fffc;
+    box-shadow:1px 1px 6px #000;
   }
-  .ant-col > .ant-card {
-    box-shadow:1px 1px 3px #0004
-  }
-  .ant-col > a {
-    box-shadow:1px 1px 6px #00f4;
+`
+
+const ReadMore = styled(ReadOutlined)`
+  font-size:1.5em;
+  color:#000d;
+`
+
+const DateTag = styled.div`
+  position:absolute;
+  top:0;
+  left:0;
+  background-color:#fffa;
+  padding:1em;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  .ant-avatar {
+    color:#fffc;
+    background-color:#000d;
   }
 `
 
@@ -71,8 +98,7 @@ const Page = ({ data }) => {
             ...event, frontmatter: {
               ...event.frontmatter,
               date: date,
-              dateDescription: rule.toText().substring(0, rule.toText().indexOf(' until')),
-              timeDescription: 'starting at ' + date.toFormat('h:mma ZZZZ')
+              dateDescription: `${rule.toText().substring(0, rule.toText().indexOf(' until'))}, ${date.toFormat('h:mma ZZZZ')}`
             }
           }
         })
@@ -87,19 +113,19 @@ const Page = ({ data }) => {
         <Space direction="vertical">
           <CardDeck gutter={16}>
             {currentEvents.map((event, i) => {
-              const card = (<Card>
-                <GatsbyImage image={getImage(event.frontmatter.image)} alt={event.frontmatter.title} style={{ height: "220px" }} />
-                <Title level={4}>
-                  {event.frontmatter.title}
-                </Title>
-                <Title level={5}>
-                  {event.frontmatter.dateDescription}<br />{event.frontmatter.timeDescription}
-                </Title>
-                <Paragraph>{event.frontmatter.description}</Paragraph>
-              </Card>)
+              const actions = []
+              if (event.tableOfContents.items) actions.push(<Link to={event.slug}><Space direction="horizontal"><ReadMore /><Text strong>Read more...</Text></Space></Link>)
               return <Col xs={24} sm={12} lg={8} xl={8} key={"event-" + i}>
-                {event.tableOfContents.items && <Link href={event.slug}>{card}</Link>}
-                {!event.tableOfContents.items && <>{card}</>}
+                <Card
+                  cover={<GatsbyImage image={getImage(event.frontmatter.image)} alt={event.frontmatter.title} style={{ height: "220px" }} />}
+                  actions={actions}
+                >
+                  <Meta
+                    title={event.frontmatter.title}
+                    description={event.frontmatter.description}
+                  />
+                  <DateTag><Avatar>{event.frontmatter.date.toFormat("d")}</Avatar><Text strong>{event.frontmatter.date.toFormat("MMM")}</Text></DateTag>
+                </Card>
               </Col>
             })}
           </CardDeck>

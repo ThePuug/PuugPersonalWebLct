@@ -4,15 +4,16 @@ import tzdata from "tzdata"
 import axios from "axios"
 import { MdxSection, Section } from "../components/custom"
 import { graphql } from "gatsby"
-import { Button, Card, Checkbox, Drawer, Form, Input, Layout, message, Radio, Result, Select, Typography } from "antd"
+import { Button, Card, Drawer, Form, Input, Layout, message, Radio, Result, Select, Steps, Typography } from "antd"
 import { AudioTwoTone, DoubleLeftOutlined, DoubleRightOutlined, IdcardTwoTone, InteractionTwoTone, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { DateTime } from "luxon"
 
 const { zones } = tzdata
 const { TextArea } = Input
 const { Option } = Select
-const { Text, Title } = Typography
+const { Text } = Typography
 const { Content } = Layout
+const { Step } = Steps
 
 const UnfoldIcon = styled(DoubleRightOutlined)`
   position: fixed;
@@ -96,7 +97,7 @@ const Page = ({ data }) => {
       contentWrapperStyle={{ maxWidth: 1199, backgroundColor:"#fffc" }}
       headerStyle={{backgroundColor:"#fffc"}}>
         <MdxSection>{data.mdx.body}</MdxSection>
-        <FoldButton type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
+        <FoldButton size="large" type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
     </StyledDrawer>
     <Content>
       <Section transparent>
@@ -175,11 +176,11 @@ const Page = ({ data }) => {
           }
           {formAction.action === "sent" &&
             <Result icon={<SmileTwoTone />} title="Application submitted!" subTitle="There's a couple steps left">
-              <ol>
-                <li><Checkbox checked disabled key={1}><Text delete>Submit your application</Text></Checkbox></li>
-                <li><Checkbox disabled key={2}><Text strong>Get connected to our <a href="https://discord.gg/rvENckg">Discord server</a></Text></Checkbox></li>
-                <li><Checkbox disabled key={3}><Text>Attend the next Guild Orientation, Sundays at 12:30 PM</Text></Checkbox></li>
-              </ol>
+              <Steps direction="vertical" current={1}>
+                <Step key={1} title="Apply" description="Submit your application" />
+                <Step key={2} title="Connect" description={<Text strong>Connect to our <a href="https://discord.gg/rvENckg">Discord server</a></Text>} />
+                <Step key={3} title="Meet" description="Attend the next Guild Orientation, Sundays at 12:30 PM" />
+              </Steps>
             </Result>
           }
         </StyledCard>

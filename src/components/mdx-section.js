@@ -1,9 +1,13 @@
 import React from "react"
 import Section from "./section"
-import { Typography } from "antd"
+import { Collapse, Typography } from "antd"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import { shortcodes } from "../templates/default"
+
+const { Panel } = Collapse
+const { Link, Paragraph, Title } = Typography
+
+const shortcodes = { Collapse, Link, Panel, Paragraph, Title }
 
 const Component = (props) => {
   return <Section {...props}>
@@ -17,4 +21,5 @@ const Component = (props) => {
   </Section>
 }
 
+export { shortcodes }
 export default Component

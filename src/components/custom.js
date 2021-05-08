@@ -1,3 +1,3 @@
-import MdxSection from "./mdx-section"
+import MdxSection, { shortcodes }  from "./mdx-section"
 import Section from "./section"
-export { MdxSection, Section }
+export { MdxSection, Section, shortcodes }

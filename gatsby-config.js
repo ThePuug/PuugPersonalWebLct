@@ -14,9 +14,9 @@ module.exports = {
     { 
       resolve: "gatsby-plugin-mdx",
       options: {
-        defaultLayouts: {
-          default: require.resolve("./src/templates/default.js"),
-        },
+        gatsbyRemarkPlugins: [
+          'gatsby-remark-images',
+        ],
       },
     },
     {
@@ -27,6 +27,7 @@ module.exports = {
     },
     "gatsby-plugin-sharp",
     "gatsby-plugin-antd",
+    "gatsby-remark-images",
     "gatsby-transformer-sharp",
     {
       resolve: "gatsby-source-filesystem",
