@@ -15,18 +15,24 @@ const { Text } = Typography
 const { Content } = Layout
 const { Step } = Steps
 
-const UnfoldIcon = styled(DoubleRightOutlined)`
+const UnfoldButton = styled(Button)`
   position: fixed;
-  bottom: .25em;
+  bottom: 50px;
   left: 0;
-  display: block;
-  font-size: 4rem;
-  padding-left:.25em;
-  color:white;
-  background-color:#1890ff;
+  padding-left:1em;
   border-left:none;
   border-radius:0 .33em .33em 0;
   box-shadow:1px 1px 7px #000;
+`
+
+const FoldButton = styled(Button)`
+  position:sticky;
+  float:right;
+  margin-right:-24px;
+  bottom: 26px;
+  border-right:none;
+  border-radius:.33em 0 0 .33em;
+  box-shadow:-1px 1px 7px #000;
 `
 
 const StyledCard = styled(Card)`
@@ -46,11 +52,6 @@ const StyledDrawer = styled(Drawer)`
   .ant-drawer-content {
     background:none;
   }
-`
-
-const FoldButton = styled(Button)`
-  float: right;
-  margin-top:1em;
 `
 
 const Page = ({ data }) => {
@@ -85,19 +86,20 @@ const Page = ({ data }) => {
     }
   }
 
-  const unfold = () => { 
+  const unfold = () => {
     setViewed(true)
     setVisible(true)
   }
 
-  return (<>
+  return <>
+    { !visible && <UnfoldButton size="large" type="primary" icon={<DoubleRightOutlined/>} onClick={unfold} />}
     <StyledDrawer title="You can close this window at any time" visible={visible} placement="left" theme="light" width="90%"
       onClose={() => setVisible(false)}
-      drawerStyle={{background:"none"}}
-      contentWrapperStyle={{ maxWidth: 1199, backgroundColor:"#fffc" }}
-      headerStyle={{backgroundColor:"#fffc"}}>
-        <MdxSection>{data.mdx.body}</MdxSection>
-        <FoldButton size="large" type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
+      drawerStyle={{ background: "none" }}
+      contentWrapperStyle={{ maxWidth: 1199, backgroundColor: "#fffc" }}
+      headerStyle={{ backgroundColor: "#fffc" }}>
+      <MdxSection>{data.mdx.body}</MdxSection>
+      <FoldButton size="large" type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
     </StyledDrawer>
     <Content>
       <Section transparent>
@@ -186,8 +188,7 @@ const Page = ({ data }) => {
         </StyledCard>
       </Section>
     </Content>
-    {!visible && <UnfoldIcon onClick={unfold} />}
-  </>)
+  </>
 }
 
 export const pageQuery = graphql`query {

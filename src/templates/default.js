@@ -45,7 +45,7 @@ const Component = (props) => {
         <Col flex="1 1">
           <StyledHeader
             title={mdx.frontmatter.title}
-            tags={[dates.map((dt, i) => <Tag color="blue" key={"date-"+i}>{dt.toFormat("d MMM")}</Tag>)]}
+            tags={[dates.map((dt, i) => <Tag color="geekblue" key={"date-"+i}>{dt.toFormat("d MMM")}</Tag>)]}
             extra={<h3>Starting at {dates[0].toFormat("hh:mm a ZZZZ")}</h3>}>
             <Paragraph>{mdx.frontmatter.description}</Paragraph>
           </StyledHeader>

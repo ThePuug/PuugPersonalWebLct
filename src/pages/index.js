@@ -54,7 +54,7 @@ const DateTag = styled.div`
   position:absolute;
   top:0;
   left:0;
-  background-color:#fffa;
+  background-color:#fffc;
   padding:1em;
   display:flex;
   flex-direction:column;
