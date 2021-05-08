@@ -124,7 +124,11 @@ const Page = ({ data }) => {
                     title={event.frontmatter.title}
                     description={event.frontmatter.description}
                   />
-                  <DateTag><Avatar>{event.frontmatter.date.toFormat("d")}</Avatar><Text strong>{event.frontmatter.date.toFormat("MMM")}</Text></DateTag>
+                  <DateTag>
+                    <Avatar>{event.frontmatter.date.toFormat("d")}</Avatar>
+                    <Text strong>{event.frontmatter.date.toFormat("MMM")}</Text>
+                    <Text strong>{event.frontmatter.date.toFormat("h:mm a ZZZZ")}</Text>
+                  </DateTag>
                 </Card>
               </Col>
             })}
