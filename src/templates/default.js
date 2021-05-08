@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { graphql } from "gatsby"
 import { Section, MdxSection } from "../components/custom"
-import { Col, Layout, PageHeader, Row, Tag, Typography } from "antd"
+import { Avatar, Col, Layout, PageHeader, Row, Tag, Typography } from "antd"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
@@ -45,13 +45,18 @@ const Component = (props) => {
         <Col flex="1 1">
           <StyledHeader
             title={mdx.frontmatter.title}
-            tags={[dates.map((dt, i) => <Tag color="geekblue" key={"date-"+i}>{dt.toFormat("d MMM")}</Tag>)]}
+            tags={[dates.map((dt, i) => <Tag color="geekblue" key={"date-" + i}>{dt.toFormat("d MMM")}</Tag>)]}
             extra={<h3>Starting at {dates[0].toFormat("hh:mm a ZZZZ")}</h3>}>
             <Paragraph>{mdx.frontmatter.description}</Paragraph>
+            <Avatar.Group size="large">
+              {mdx.fields && mdx.fields.organizers && mdx.fields.organizers.map((organizer, i) =>
+                <Avatar icon={<GatsbyImage image={getImage(organizer.avatar)} alt="organizer" />} key={"icon-" + 1} />
+              )}
+            </Avatar.Group>
           </StyledHeader>
         </Col>
         <Col flex="1 1">
-          <GatsbyImage image={getImage(mdx.frontmatter.image)} alt="feature" style={{height:"100%"}} />
+          <GatsbyImage image={getImage(mdx.frontmatter.image)} alt="feature" style={{ height: "100%" }} />
         </Col>
       </Row>
     </Section>
@@ -64,6 +69,15 @@ const Component = (props) => {
 export const pageQuery = graphql`query($slug: String!){
   mdx(slug: { eq: $slug }) {
     body
+    fields {
+      organizers {
+        avatar {
+          childImageSharp {
+            gatsbyImageData
+          }
+        }
+      }
+    }
     frontmatter {
       title
       description
@@ -75,7 +89,7 @@ export const pageQuery = graphql`query($slug: String!){
       }
       image {
         childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED)
+          gatsbyImageData
         }
       }
     }

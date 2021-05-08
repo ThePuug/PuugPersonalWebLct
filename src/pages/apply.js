@@ -92,7 +92,6 @@ const Page = ({ data }) => {
   }
 
   return <>
-    { !visible && <UnfoldButton size="large" type="primary" icon={<DoubleRightOutlined/>} onClick={unfold} />}
     <StyledDrawer title="You can close this window at any time" visible={visible} placement="left" theme="light" width="90%"
       onClose={() => setVisible(false)}
       drawerStyle={{ background: "none" }}
@@ -187,6 +186,7 @@ const Page = ({ data }) => {
           }
         </StyledCard>
       </Section>
+      { !visible && <UnfoldButton size="large" type="primary" icon={<DoubleRightOutlined/>} onClick={unfold} />}
     </Content>
   </>
 }
