@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { graphql } from "gatsby"
 import { Section, MdxSection } from "../components/custom"
-import { Avatar, Col, Layout, PageHeader, Row, Tag, Typography } from "antd"
+import { Avatar, Col, Layout, PageHeader, Row, Tag, Tooltip, Typography } from "antd"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
@@ -50,7 +50,9 @@ const Component = (props) => {
             <Paragraph>{mdx.frontmatter.description}</Paragraph>
             <Avatar.Group size="large">
               {mdx.fields && mdx.fields.organizers && mdx.fields.organizers.map((organizer, i) =>
-                <Avatar icon={<GatsbyImage image={getImage(organizer.avatar)} alt="organizer" />} key={"icon-" + 1} />
+                  <Avatar key={"avatar-" + 1}
+                    icon={<Tooltip title={mdx.frontmatter.organizers[i]} color="geekblue"><GatsbyImage image={getImage(organizer.avatar)} alt="organizer" /></Tooltip>} 
+                  />
               )}
             </Avatar.Group>
           </StyledHeader>
@@ -92,6 +94,7 @@ export const pageQuery = graphql`query($slug: String!){
           gatsbyImageData
         }
       }
+      organizers
     }
   }
 }
