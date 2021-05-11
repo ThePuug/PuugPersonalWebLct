@@ -6,6 +6,14 @@ module.exports = {
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
     {
+      resolve: "gatsby-plugin-google-gtag",
+      options: {
+        trackingIds: [
+          "271244130"
+        ]
+      }
+    },
+    {
       resolve: "gatsby-plugin-manifest",
       options: {
         icon: "src/images/icon.png",
