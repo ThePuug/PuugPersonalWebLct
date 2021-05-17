@@ -3,8 +3,7 @@ module.exports = {
     title: "Liars, Cheats, and Thieves",
   },
   plugins: [
-    "gatsby-plugin-image",
-    "gatsby-plugin-react-helmet",
+    "gatsby-plugin-antd",
     {
       resolve: "gatsby-plugin-google-gtag",
       options: {
@@ -13,30 +12,17 @@ module.exports = {
         ]
       }
     },
+    "gatsby-plugin-image",
+    "gatsby-plugin-mdx",
+    "gatsby-plugin-react-helmet",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
         icon: "src/images/icon.png",
       },
     },
-    { 
-      resolve: "gatsby-plugin-mdx",
-      options: {
-        gatsbyRemarkPlugins: [
-          'gatsby-remark-images',
-        ],
-      },
-    },
-    {
-      resolve: "gatsby-plugin-less",
-      options: {
-        javascriptEnabled: true
-      }
-    },
     "gatsby-plugin-sharp",
-    "gatsby-plugin-antd",
-    "gatsby-remark-images",
-    "gatsby-transformer-sharp",
+    "gatsby-plugin-styled-components",
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -58,5 +44,6 @@ module.exports = {
         path: "./src/content/",
       },
     },
+    "gatsby-transformer-sharp",
   ],
 };
