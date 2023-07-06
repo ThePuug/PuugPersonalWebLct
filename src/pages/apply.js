@@ -122,10 +122,9 @@ const Page = ({ data }) => {
                 <Input size="large" placeholder="AccountName.1234" maxLength={50} prefix={<IdcardTwoTone />} />
               </Form.Item>
               <Form.Item required={false} name="DiscordId" label="Discord ID" rules={[
-                { required: true, message: "This field is required." },
-                { pattern: new RegExp("\\w#\\d{4}"), message: "Required format is: Username#1234" }
+                { required: true, message: "This field is required." }
               ]}>
-                <Input size="large" placeholder="Username#1234" maxLength={50} prefix={<AudioTwoTone />} />
+                <Input size="large" placeholder="Username" maxLength={50} prefix={<AudioTwoTone />} />
               </Form.Item>
               <Form.Item required={false} name="AboutMe" label="Tell us about yourself" labelCol={{ span: 24 }} rules={[
                 { required: true, message: "This field is required." }
