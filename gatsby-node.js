@@ -21,7 +21,10 @@ exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, 
   if (node.internal.type !== "Mdx" || !node.frontmatter.organizers) return
   const usernames = node.frontmatter.organizers
 
-  const client = new Discord.Client()
+  const client = new Discord.Client({intents: [
+    Discord.GatewayIntentBits.Guilds, 
+    Discord.GatewayIntentBits.GuildMembers
+  ]})
   await client.login(process.env.DISCORD_TOKEN)
 
   const guild = await client.guilds.fetch('271705234252759040')
