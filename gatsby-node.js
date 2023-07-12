@@ -1,33 +1,28 @@
 require("dotenv").config()
 const Discord = require("discord.js")
-const { createRemoteFileNode } = require("gatsby-source-filesystem")
+const path = require('path')
+const { createFilePath, createRemoteFileNode } = require("gatsby-source-filesystem")
 
-exports.onCreatePage = ({ page, actions }) => {
-  const { createPage, deletePage } = actions
-  if (page.path.startsWith("/events/")) {
-    deletePage(page)
-    createPage({
-      ...page,
-      component: require.resolve('./src/templates/default.js'),
-      context: {
-        ...page.context,
-        slug: page.path.substring(1).replace(/\/$/, '')
-      },
-    })
-  }
-}
+exports.onCreateNode = async ({ node, actions, store, cache, getNode, createNodeId }) => {
+  const { createNode, createNodeField } = actions
 
-exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, store, cache, createNodeId, }) => {
-  if (node.internal.type !== "Mdx" || !node.frontmatter.organizers) return
-  const usernames = node.frontmatter.organizers
+  if (node.internal.type !== "Mdx") return
+  const path = createFilePath({ node, getNode, basePath: `content` })
+  createNodeField({
+    node,
+    name: `path`,
+    value: path,
+  })
 
+  if(!node.frontmatter.organizers) return
   const client = new Discord.Client({intents: [
     Discord.GatewayIntentBits.Guilds, 
     Discord.GatewayIntentBits.GuildMembers
   ]})
   await client.login(process.env.DISCORD_TOKEN)
-
   const guild = await client.guilds.fetch('271705234252759040')
+
+  const usernames = node.frontmatter.organizers
   const users = (await Promise.all(usernames.map(async username => {
     const result = await guild.members.fetch({ query: username, limit: 1 })
     const first = result.get(result.keys().next().value)
@@ -52,4 +47,33 @@ exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, 
   })
 
   node.fields.organizers.forEach((organizer,i) => organizer.avatar___NODE = organizers[i].id)
+}
+
+exports.createPages = async ({graphql, actions}) => {
+  const { createPage } = actions
+  const template = path.resolve('./src/layout/event.js')
+  const { data: { events }} = await graphql(`query {
+      events: allMdx(filter: { fields: { path: { regex: "/^\/events/" }}}) {
+        nodes {
+          id
+          fields {
+            path
+          }
+          internal {
+            contentFilePath
+          }
+        }
+      }
+    }
+  `)
+  events.nodes.forEach(event => {
+    console.log(event)
+    createPage({
+      path: event.fields.path,
+      component: `${template}?__contentFilePath=${event.internal.contentFilePath}`,
+      context: {
+        id: event.id
+      }
+    })
+  })
 }

@@ -14,8 +14,7 @@ const StyledHeader = styled(PageHeader)`
   height:100%;
 `
 
-const Component = (props) => {
-  const { data: { mdx } } = props
+const Component = ({ data: { mdx }, children }) => {
   const after = DateTime.fromISO(DateTime.now().toString()).startOf('day')
   const before = after.plus({ weeks: 2 })
   const start = DateTime.fromISO(mdx.frontmatter.date)
@@ -49,7 +48,7 @@ const Component = (props) => {
             extra={<h3>Starting at {dates[0].toFormat("hh:mm a ZZZZ")}</h3>}>
             <Paragraph>{mdx.frontmatter.description}</Paragraph>
             <Avatar.Group size="large">
-              {mdx.fields && mdx.fields.organizers && mdx.fields.organizers.map((organizer, i) =>
+              {mdx.frontmatter.organizers && mdx.frontmatter.organizers.map((organizer, i) =>
                   <Avatar key={"avatar-" + 1}
                     icon={<Tooltip title={mdx.frontmatter.organizers[i]} color="geekblue"><GatsbyImage image={getImage(organizer.avatar)} alt="organizer" /></Tooltip>} 
                   />
@@ -62,20 +61,20 @@ const Component = (props) => {
         </Col>
       </Row>
     </Section>
-    <MdxSection {...props}>
-      {mdx.body}
+    <MdxSection>
+      {children}
     </MdxSection>
   </Content>
 }
 
-export const pageQuery = graphql`query($slug: String!){
-  mdx(slug: { eq: $slug }) {
-    body
+export const pageQuery = graphql`query($id: String!){
+  mdx(id: { eq: $id }) {
     fields {
       organizers {
+        id
         avatar {
           childImageSharp {
-            gatsbyImageData
+           gatsbyImageData
           }
         }
       }

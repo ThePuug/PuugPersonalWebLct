@@ -8,6 +8,9 @@ import { ReadOutlined } from "@ant-design/icons"
 import { getImage, GatsbyImage } from "gatsby-plugin-image"
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
+
+import Mdx from "../../content/index.mdx"
+
 const { Text } = Typography
 const { Meta } = Card
 const { Content } = Layout
@@ -65,11 +68,11 @@ const DateTag = styled.div`
   }
 `
 
-const Page = ({ data }) => {
+const Page = ({ data, children }) => {
 
   const windowSize = useWindowSize()
-  const events = data.events.edges
-    .flatMap(({ node: event }) => {
+  const events = data.events.nodes
+    .flatMap((event) => {
       const after = DateTime.fromISO(DateTime.now().toString()).startOf('day')
       const before = after.plus({ weeks: 2 })
       const start = DateTime.fromISO(event.frontmatter.date)
@@ -114,7 +117,7 @@ const Page = ({ data }) => {
           <CardDeck gutter={16}>
             {currentEvents.map((event, i) => {
               const actions = []
-              if (event.tableOfContents.items) actions.push(<Link to={event.slug}><Space direction="horizontal"><ReadMore /><Text strong>Read more...</Text></Space></Link>)
+              if (event.tableOfContents.items) actions.push(<Link to={event.fields.path}><Space direction="horizontal"><ReadMore /><Text strong>Read more...</Text></Space></Link>)
               return <Col xs={24} sm={12} lg={8} xl={8} key={"event-" + i}>
                 <Card
                   cover={<GatsbyImage image={getImage(event.frontmatter.image)} alt={event.frontmatter.title} style={{ height: "220px" }} />}
@@ -138,40 +141,37 @@ const Page = ({ data }) => {
           </Row>
         </Space>
       </Section>
-      <MdxSection transparent>{data.mdx.body}</MdxSection>
+      <MdxSection transparent>
+        <Mdx />
+      </MdxSection>
     </Content>
   )
 }
 
 export const pageQuery = graphql`query {
-  events: allMdx(filter: { slug: { regex: "\/^events\/" }}) {
-    edges {
-      node {
-        slug
-        id
-        tableOfContents
-        frontmatter {
-          title
-          description
-          date
-          repeat {
-            frequency
-            interval
-            byWeekDays
-          }
-          image {
-            childImageSharp {
-              gatsbyImageData(layout: CONSTRAINED)
-            }
+  events: allMdx(filter: { fields: { path: { regex: "/^\/events/" }}}) {
+    nodes {
+      id
+      tableOfContents
+      fields {
+        path
+      }
+      frontmatter {
+        title
+        description
+        date
+        repeat {
+          frequency
+          interval
+          byWeekDays
+        }
+        image {
+          childImageSharp {
+            gatsbyImageData(layout: CONSTRAINED)
           }
         }
       }
     }
-  }
-  mdx(slug: {eq: ""}) {
-    id
-    slug
-    body
   }
 }`
 

@@ -1,5 +1,5 @@
 import React from "react"
-import Template from "./src/templates/wrapper"
+import Template from "./src/layout/wrapper"
 import "./src/global.css"
 
 export const wrapPageElement = ({ element, props }) => (

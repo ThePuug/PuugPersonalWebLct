@@ -3,10 +3,11 @@ import styled from "styled-components"
 import tzdata from "tzdata"
 import axios from "axios"
 import { MdxSection, Section } from "../components/custom"
-import { graphql } from "gatsby"
 import { Button, Card, Drawer, Form, Input, Layout, message, Radio, Result, Select, Steps, Typography } from "antd"
 import { AudioTwoTone, DoubleLeftOutlined, DoubleRightOutlined, IdcardTwoTone, InteractionTwoTone, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { DateTime } from "luxon"
+
+import Mdx from "../../content/apply.mdx"
 
 const { zones } = tzdata
 const { TextArea } = Input
@@ -54,7 +55,7 @@ const StyledDrawer = styled(Drawer)`
   }
 `
 
-const Page = ({ data }) => {
+const Page = ({ data, children }) => {
   const [visible, setVisible] = useState(false)
   const [detailQuestion, setDetailQuestion] = useState(null)
   const [viewed, setViewed] = useState(false)
@@ -97,7 +98,9 @@ const Page = ({ data }) => {
       drawerStyle={{ background: "none" }}
       contentWrapperStyle={{ maxWidth: 1199, backgroundColor: "#fffc" }}
       headerStyle={{ backgroundColor: "#fffc" }}>
-      <MdxSection>{data.mdx.body}</MdxSection>
+        <MdxSection>
+          <Mdx />
+        </MdxSection>
       <FoldButton size="large" type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
     </StyledDrawer>
     <Content>
@@ -189,13 +192,5 @@ const Page = ({ data }) => {
     </Content>
   </>
 }
-
-export const pageQuery = graphql`query {
-  mdx(slug: { eq: "apply" }) {
-    id
-    slug
-    body
-  }
-}`
 
 export default Page

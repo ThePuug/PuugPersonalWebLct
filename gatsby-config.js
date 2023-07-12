@@ -4,8 +4,7 @@ module.exports = {
   },
   plugins: [
     "gatsby-plugin-antd",
-    {
-      resolve: "gatsby-plugin-google-gtag",
+    { resolve: "gatsby-plugin-google-gtag",
       options: {
         trackingIds: [
           "271244130"
@@ -13,37 +12,32 @@ module.exports = {
       }
     },
     "gatsby-plugin-image",
-    "gatsby-plugin-mdx",
+    { resolve: "gatsby-plugin-mdx",
+      options: {
+        gatsbyRemarkPlugins: [ "gatsby-remark-images"]
+      }
+    },
     "gatsby-plugin-react-helmet",
-    {
-      resolve: "gatsby-plugin-manifest",
+    { resolve: "gatsby-plugin-manifest",
       options: {
         icon: "src/images/icon.png",
       },
     },
     "gatsby-plugin-sharp",
     "gatsby-plugin-styled-components",
-    {
-      resolve: "gatsby-source-filesystem",
+    { resolve: "gatsby-source-filesystem",
       options: {
         name: "images",
-        path: "./src/images/",
+        path: `${__dirname}/src/images`,
       },
     },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "pages",
-        path: "./src/pages/",
-      },
-    },
-    {
-      resolve: "gatsby-source-filesystem",
+    { resolve: "gatsby-source-filesystem",
       options: {
         name: "content",
-        path: "./src/content/",
+        path: `${__dirname}/content`,
       },
     },
+    "gatsby-transformer-remark",
     "gatsby-transformer-sharp",
   ],
 };
