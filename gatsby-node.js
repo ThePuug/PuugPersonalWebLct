@@ -67,7 +67,6 @@ exports.createPages = async ({graphql, actions}) => {
     }
   `)
   events.nodes.forEach(event => {
-    console.log(event)
     createPage({
       path: event.fields.path,
       component: `${template}?__contentFilePath=${event.internal.contentFilePath}`,
