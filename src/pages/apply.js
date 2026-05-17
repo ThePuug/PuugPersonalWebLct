@@ -181,7 +181,7 @@ const Page = ({ data, children }) => {
             <Result icon={<SmileTwoTone />} title="Application submitted!" subTitle="There's a couple steps left">
               <Steps direction="vertical" current={1}>
                 <Step key={1} title="Apply" description="Submit your application" />
-                <Step key={2} title="Connect" description={<Text strong>Connect to our <a href="https://discord.gg/rvENckg">Discord server</a></Text>} />
+                <Step key={2} title="Connect" description={<Text strong>Connect to our <a href="https://discord.gg/TefAuR4m5c">Discord server</a></Text>} />
                 <Step key={3} title="Meet" description="Attend the next Guild Orientation, Sundays at 12:30 PM" />
               </Steps>
             </Result>
