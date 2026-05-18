@@ -56,7 +56,7 @@ const Template = ({ children }) => {
             <HeaderLinks xs={24} sm={24} md={8}>
               <Row align="space-around" gutter={16}>
                 <Col>
-                  <a href="https://discord.gg/rvENckg">
+                  <a href="https://discord.gg/TefAuR4m5c">
                     <Space direction="horizontal">
                       <StaticImage src="../images/discord-brands.svg" alt="discord" width={36} />
                       <Text>Join us on Discord</Text>
