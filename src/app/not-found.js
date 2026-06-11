@@ -1,5 +1,7 @@
 import * as React from "react"
-import { Link } from "gatsby"
+import Link from "next/link"
+
+export const metadata = { title: 'Not found' }
 
 // styles
 const pageStyles = {
@@ -28,7 +30,6 @@ const codeStyles = {
 const NotFoundPage = () => {
   return (
     <main style={pageStyles}>
-      <title>Not found</title>
       <h1 style={headingStyles}>Page not found</h1>
       <p style={paragraphStyles}>
         Sorry{" "}
@@ -40,12 +41,12 @@ const NotFoundPage = () => {
         {process.env.NODE_ENV === "development" ? (
           <>
             <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
+            Try creating a page in <code style={codeStyles}>src/app/</code>.
             <br />
           </>
         ) : null}
         <br />
-        <Link to="/">Go home</Link>.
+        <Link href="/">Go home</Link>.
       </p>
     </main>
   )

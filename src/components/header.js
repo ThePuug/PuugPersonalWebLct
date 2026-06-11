@@ -1,9 +1,15 @@
+'use client'
+
+import '@ant-design/v5-patch-for-react-19'
 import React from "react"
 import styled from "styled-components"
-import { Section } from "../components/custom"
-import { Link } from "gatsby"
+import { Section } from "./custom"
+import Link from "next/link"
+import Image from "next/image"
 import { Col, Layout, Row, Space, Typography } from "antd"
-import { StaticImage } from "gatsby-plugin-image"
+import logo from "../images/logo.png"
+import discordBrands from "../images/discord-brands.svg"
+import envelopeSquareSolid from "../images/envelope-square-solid.svg"
 const { Header } = Layout
 const { Text } = Typography
 
@@ -20,7 +26,7 @@ const StyledHeader = styled(Header)`
   padding:0;
   margin:0;
   @media (min-width: 768px) {
-    .ant-row-space-around {
+    .header-links {
       justify-content: flex-start;
     }
   }
@@ -42,31 +48,31 @@ const HeaderLinks = styled(Col)`
   }
 `
 
-const Template = ({ children }) => {
+const AppFrame = ({ children }) => {
   return (
     <CoverLayout>
       <StyledHeader>
         <HeaderSection transparent>
-          <Row align="space-between" justify="middle" gutter={[16,0]}>
+          <Row justify="space-between" align="middle" gutter={[16,0]}>
             <Col xs={24} sm={24} md={16}>
-              <Link to="/">
-                <StaticImage src="../images/logo.png" alt="Liars, Cheats, and Thieves" placeholder="blurred" />
+              <Link href="/">
+                <Image src={logo} alt="Liars, Cheats, and Thieves" style={{maxWidth:'100%', height:'auto'}} priority />
               </Link>
             </Col>
             <HeaderLinks xs={24} sm={24} md={8}>
-              <Row align="space-around" gutter={16}>
+              <Row justify="space-around" gutter={16} className="header-links">
                 <Col>
                   <a href="https://discord.gg/TefAuR4m5c">
                     <Space direction="horizontal">
-                      <StaticImage src="../images/discord-brands.svg" alt="discord" width={36} />
+                      <Image src={discordBrands} alt="discord" width={36} />
                       <Text>Join us on Discord</Text>
                     </Space>
                   </a>
                 </Col>
                 <Col>
-                  <Link to="/apply">
+                  <Link href="/apply">
                     <Space direction="horizontal">
-                      <StaticImage src="../images/envelope-square-solid.svg" alt="discord" width={36} />
+                      <Image src={envelopeSquareSolid} alt="discord" width={36} />
                       <Text>Apply Now</Text>
                     </Space>
                   </Link>
@@ -81,4 +87,4 @@ const Template = ({ children }) => {
   )
 };
 
-export default Template;
+export default AppFrame;

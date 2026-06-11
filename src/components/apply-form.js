@@ -1,20 +1,20 @@
+'use client'
+
+import '@ant-design/v5-patch-for-react-19'
 import React, { useState } from "react"
 import styled from "styled-components"
 import tzdata from "tzdata"
 import axios from "axios"
-import { MdxSection, Section } from "../components/custom"
+import { MdxSection, Section } from "@/components/custom"
 import { Button, Card, Drawer, Form, Input, Layout, message, Radio, Result, Select, Steps, Typography } from "antd"
 import { AudioTwoTone, DoubleLeftOutlined, DoubleRightOutlined, IdcardTwoTone, InteractionTwoTone, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { DateTime } from "luxon"
-
-import Mdx from "../../content/apply.mdx"
 
 const { zones } = tzdata
 const { TextArea } = Input
 const { Option } = Select
 const { Text } = Typography
 const { Content } = Layout
-const { Step } = Steps
 
 const UnfoldButton = styled(Button)`
   position: fixed;
@@ -55,7 +55,7 @@ const StyledDrawer = styled(Drawer)`
   }
 `
 
-const Page = ({ data, children }) => {
+const ApplyForm = ({ mdx }) => {
   const [visible, setVisible] = useState(false)
   const [detailQuestion, setDetailQuestion] = useState(null)
   const [viewed, setViewed] = useState(false)
@@ -93,13 +93,11 @@ const Page = ({ data, children }) => {
   }
 
   return <>
-    <StyledDrawer title="You can close this window at any time" visible={visible} placement="left" theme="light" width="90%"
+    <StyledDrawer title="You can close this window at any time" open={visible} placement="left" width="90%"
       onClose={() => setVisible(false)}
-      drawerStyle={{ background: "none" }}
-      contentWrapperStyle={{ maxWidth: 1199, backgroundColor: "#fffc" }}
-      headerStyle={{ backgroundColor: "#fffc" }}>
+      styles={{ content: { background: "none" }, wrapper: { maxWidth: 1199, backgroundColor: "#fffc" }, header: { backgroundColor: "#fffc" } }}>
         <MdxSection>
-          <Mdx />
+          {mdx}
         </MdxSection>
       <FoldButton size="large" type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
     </StyledDrawer>
@@ -179,11 +177,11 @@ const Page = ({ data, children }) => {
           }
           {formAction.action === "sent" &&
             <Result icon={<SmileTwoTone />} title="Application submitted!" subTitle="There's a couple steps left">
-              <Steps direction="vertical" current={1}>
-                <Step key={1} title="Apply" description="Submit your application" />
-                <Step key={2} title="Connect" description={<Text strong>Connect to our <a href="https://discord.gg/TefAuR4m5c">Discord server</a></Text>} />
-                <Step key={3} title="Meet" description="Attend the next Guild Orientation, Sundays at 12:30 PM" />
-              </Steps>
+              <Steps direction="vertical" current={1} items={[
+                { key: 1, title: "Apply", description: "Submit your application" },
+                { key: 2, title: "Connect", description: <Text strong>Connect to our <a href="https://discord.gg/TefAuR4m5c">Discord server</a></Text> },
+                { key: 3, title: "Meet", description: "Attend the next Guild Orientation, Sundays at 12:30 PM" },
+              ]} />
             </Result>
           }
         </StyledCard>
@@ -193,4 +191,4 @@ const Page = ({ data, children }) => {
   </>
 }
 
-export default Page
+export default ApplyForm
