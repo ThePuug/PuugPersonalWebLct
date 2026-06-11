@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
             <AppFrame>{children}</AppFrame>
           </StyledComponentsRegistry>
         </AntdRegistry>
-        <GoogleAnalytics gaId="271244130" />
+        <GoogleAnalytics gaId="G-59PBRENWD6" />
       </body>
     </html>
   )
