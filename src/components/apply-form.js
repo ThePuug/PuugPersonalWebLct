@@ -8,6 +8,7 @@ import tzdata from "tzdata"
 import { DateTime } from "luxon"
 import DiscordIcon from "@/components/discord-icon"
 import { OrientationTime } from "@/components/schedule"
+import { highlightTags } from "@/lib/highlight"
 import background from "@/images/background.jpg"
 
 const { zones } = tzdata
@@ -77,7 +78,7 @@ const ApplyForm = ({ content, orientation }) => {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
-  // Same timezone option format the antd form produced, so the webhook
+  // Same timezone option format as the original form, so the webhook
   // message reads identically.
   const timezoneOptions = useMemo(() => {
     const dto = DateTime.local()
@@ -171,7 +172,7 @@ const ApplyForm = ({ content, orientation }) => {
       <section className="lr-apply-about">
         <span className="lr-eyebrow">Mission statement</span>
         <h2 className="lr-section-title">Who we&apos;re looking for</h2>
-        {content.lead && <p className="lr-mission-lead">{content.lead}</p>}
+        {content.lead && <p className="lr-mission-lead">{highlightTags(content.lead)}</p>}
         {content.cards.length > 0 && (
           <div className="lr-info-grid">
             {content.cards.map((text, i) => {
@@ -180,7 +181,7 @@ const ApplyForm = ({ content, orientation }) => {
                 <div className="lr-info-card" key={i}>
                   <div className="lr-info-icon"><Icon /></div>
                   {title && <h3 className="lr-info-title">{title}</h3>}
-                  <p className="lr-info-text">{text}</p>
+                  <p className="lr-info-text">{highlightTags(text)}</p>
                 </div>
               )
             })}
@@ -204,7 +205,7 @@ const ApplyForm = ({ content, orientation }) => {
           <span className="lr-eyebrow">The application</span>
           <h2 className="lr-section-title">Join us</h2>
           <p>
-            Tell us a little about yourself. Prefer chat? You can also type <strong>?apply</strong> in <span className="accent">#apply-here</span> on Discord.
+            Tell us a little about yourself. Prefer chat? You can also type <strong className="lr-tag-guild">?apply</strong> in <span className="lr-tag-channel">#apply-here</span> on Discord.
           </p>
         </div>
 

@@ -6,6 +6,7 @@ import { MdxBody } from "@/lib/mdx"
 import { extractToc } from "@/lib/toc"
 import { eventComponents } from "@/components/event/mdx-components"
 import { EventDates, EventWhen } from "@/components/schedule"
+import { highlightTags } from "@/lib/highlight"
 
 const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
@@ -38,7 +39,7 @@ const EventArticle = ({ event }) => {
           <Link href="/#events" className="lr-ev-back"><BackIcon /> All events</Link>
           <span className="lr-ev-kicker">{kicker}</span>
           <h1 className="lr-ev-title">{frontmatter.title}</h1>
-          <p className="lr-ev-lead">{frontmatter.description}</p>
+          <p className="lr-ev-lead">{highlightTags(frontmatter.description)}</p>
           <EventDates frontmatter={frontmatter} />
         </div>
       </section>

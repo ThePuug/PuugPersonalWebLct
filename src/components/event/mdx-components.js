@@ -1,6 +1,5 @@
 import React from "react"
 import { slugify } from "@/lib/toc"
-import { shortcodes } from "@/components/mdx-shortcodes"
 
 const textOf = (children) => {
   if (typeof children === "string") return children
@@ -20,7 +19,6 @@ const heading = (Tag) =>
 // one level so the hero <h1> stays the page's only top-level heading. The id is
 // slugified from the text (not the tag), so the TOC anchors still resolve.
 export const eventComponents = {
-  ...shortcodes,
   h1: heading("h2"),
   h2: heading("h3"),
   h3: heading("h4"),

@@ -3,6 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { DateTime } from "luxon"
 import { EventCardPill } from "@/components/schedule"
+import { highlightTags } from "@/lib/highlight"
 
 const ArrowIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -42,7 +43,7 @@ const EventCard = ({ event }) => {
           )}
         </h3>
         <p className="lr-event-desc">
-          {frontmatter.description}
+          {highlightTags(frontmatter.description)}
           {hasHeadings && <> <Link href={`/events/${slug}`}>Read the guide →</Link></>}
         </p>
         {withAvatars.length > 0 && (

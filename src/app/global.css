@@ -369,7 +369,10 @@ img { max-width: 100%; }
 .lr-acc-content strong { color: var(--text); font-weight: 700; }
 .lr-acc-content a { color: var(--accent); font-weight: 600; }
 .lr-acc-content a:hover { text-decoration: underline; }
-.lr-channel { color: var(--accent); font-weight: 600; }
+
+/* Inline tag highlights (guild tags + @mentions bold, #channel tags accent) */
+.lr-tag-guild { color: var(--text); font-weight: 700; }
+.lr-tag-channel { color: var(--accent); font-weight: 600; }
 
 /* ===== Prose (apply + event MDX bodies) ===== */
 .lr-prose { font-size: 16px; line-height: 1.8; color: var(--muted); }
@@ -434,7 +437,6 @@ img { max-width: 100%; }
 .lr-form-head .lr-section-title { margin: 12px 0 10px; }
 .lr-form-head p { font-size: 15.5px; line-height: 1.65; color: var(--muted); max-width: 480px; margin: 0 auto; }
 .lr-form-head strong { color: var(--text); }
-.lr-form-head .accent { color: var(--accent); }
 .lr-form-card {
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) + 4px);
