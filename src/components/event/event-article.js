@@ -5,7 +5,7 @@ import DiscordIcon from "@/components/discord-icon"
 import { MdxBody } from "@/lib/mdx"
 import { extractToc } from "@/lib/toc"
 import { eventComponents } from "@/components/event/mdx-components"
-import { EventDates, EventWhen } from "@/components/event/event-schedule"
+import { EventDates, EventWhen } from "@/components/schedule"
 
 const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)

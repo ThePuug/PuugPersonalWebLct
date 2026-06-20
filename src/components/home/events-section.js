@@ -2,6 +2,7 @@ import React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { DateTime } from "luxon"
+import { EventCardPill } from "@/components/schedule"
 
 const ArrowIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -14,13 +15,8 @@ const ledBy = (organizers) =>
     .map((o) => <strong key={o.username}>@{o.username}</strong>)
     .reduce((acc, el, i) => (i === 0 ? [el] : [...acc, " & ", el]), [])
 
-// Day + time come straight from frontmatter, so the card (and its date pill)
-// is fully static — no now-dependent computation, no hydration gate needed.
-const pillLabel = (frontmatter) => {
-  const day = frontmatter.repeat.byWeekDays[0].slice(0, 3).toUpperCase()
-  const time = DateTime.fromISO(frontmatter.date).toFormat("h:mm a")
-  return `${day} · ${time}`
-}
+// Cards order by the event's Eastern start time-of-day (static); the visible
+// time is localized to each viewer by EventCardPill.
 const minuteOfDay = (frontmatter) => {
   const dt = DateTime.fromISO(frontmatter.date)
   return dt.hour * 60 + dt.minute
@@ -35,7 +31,7 @@ const EventCard = ({ event }) => {
       <div className="lr-event-media">
         <Image src={frontmatter.image} alt={frontmatter.title} fill sizes="(max-width: 600px) 100vw, (max-width: 1180px) 50vw, 380px" style={{ objectFit: "cover" }} />
         <div className="lr-event-media-fade" />
-        <span className="lr-event-pill">{pillLabel(frontmatter)}</span>
+        <span className="lr-event-pill"><EventCardPill frontmatter={frontmatter} /></span>
       </div>
       <div className="lr-event-body">
         <h3 className="lr-event-title">
@@ -75,7 +71,7 @@ const EventsSection = ({ events }) => {
           <h2 className="lr-section-title">Weekly Events</h2>
         </div>
         <p className="lr-section-note">
-          Events run because members step forward to lead them. Here&apos;s what&apos;s on the calendar this week — all times Eastern.
+          Events run because members step forward to lead them. Here&apos;s what&apos;s on the calendar this week — shown in your local time.
         </p>
       </div>
       <div className="lr-event-grid">

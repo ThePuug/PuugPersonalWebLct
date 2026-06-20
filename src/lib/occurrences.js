@@ -1,6 +1,11 @@
 import { RRule } from "rrule"
 import { DateTime } from "luxon"
 
+// The guild's home timezone. Event wall-clock times in frontmatter are defined
+// in this zone; occurrences are anchored here, then displayed in each viewer's
+// local timezone via .toLocal().
+export const HOME_ZONE = "America/New_York"
+
 const weekdayMap = {
   monday: RRule.MO,
   tuesday: RRule.TU,
@@ -11,12 +16,18 @@ const weekdayMap = {
   sunday: RRule.SU,
 }
 
-// Recurring event occurrences within the next `weeks`, expressed in Eastern time.
-// Mirrors the original EventsBrowser logic so behaviour is unchanged.
+// Upcoming occurrences within the next `weeks`, as luxon DateTimes anchored to
+// HOME_ZONE (correct absolute instants regardless of the runtime's own timezone,
+// and DST-aware). RRule operates on naive UTC, so we encode the Eastern
+// wall-clock fields as UTC going in and decode them back to HOME_ZONE coming out.
 export function eventOccurrences(frontmatter, weeks = 2) {
-  const after = DateTime.now().startOf("day")
-  const before = after.plus({ weeks })
-  const start = DateTime.fromISO(frontmatter.date)
+  const startNY = DateTime.fromISO(frontmatter.date, { zone: HOME_ZONE })
+  const dtstart = new Date(Date.UTC(startNY.year, startNY.month - 1, startNY.day, startNY.hour, startNY.minute))
+
+  const nowNY = DateTime.now().setZone(HOME_ZONE).startOf("day")
+  const after = new Date(Date.UTC(nowNY.year, nowNY.month - 1, nowNY.day))
+  const before = new Date(after.getTime() + weeks * 7 * 24 * 60 * 60 * 1000)
+
   const rule = new RRule({
     freq: RRule.WEEKLY,
     interval: frontmatter.repeat.interval,
@@ -25,25 +36,19 @@ export function eventOccurrences(frontmatter, weeks = 2) {
       if (!day) throw new Error("day not recognised")
       return day
     }),
-    dtstart: start.toJSDate(),
-    until: before.toJSDate(),
+    dtstart,
   })
-  return rule
-    .between(after.toJSDate(), before.toJSDate(), true)
-    .map((dt) =>
-      DateTime.fromISO(DateTime.fromJSDate(dt).toString().substr(0, 19), {
-        zone: "America/New_York",
-      })
-    )
-}
 
-// The next upcoming occurrence of each event, soonest first.
-export function nextOccurrencePerEvent(events, weeks = 2) {
-  return events
-    .map((event) => {
-      const dates = eventOccurrences(event.frontmatter, weeks)
-      return dates.length ? { ...event, next: dates[0] } : null
-    })
-    .filter(Boolean)
-    .sort((a, b) => a.next - b.next)
+  return rule.between(after, before, true).map((d) =>
+    DateTime.fromObject(
+      {
+        year: d.getUTCFullYear(),
+        month: d.getUTCMonth() + 1,
+        day: d.getUTCDate(),
+        hour: d.getUTCHours(),
+        minute: d.getUTCMinutes(),
+      },
+      { zone: HOME_ZONE }
+    )
+  )
 }
