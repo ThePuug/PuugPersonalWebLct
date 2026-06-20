@@ -30,7 +30,7 @@ img { max-width: 100%; }
 .lr-input:focus-visible, .lr-textarea:focus-visible, .lr-select:focus-visible,
 .lr-btn:focus-visible, .lr-chip:focus-visible, .lr-navlink:focus-visible,
 .lr-submit:focus-visible, .lr-brand:focus-visible, .lr-toc-links a:focus-visible,
-.lr-ev-back:focus-visible {
+.lr-ev-back:focus-visible, .lr-acc-head:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -340,29 +340,36 @@ img { max-width: 100%; }
 .lr-community-head .lr-section-title { margin: 10px 0 12px; }
 .lr-community-head p { font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0 auto; max-width: 560px; }
 
-/* antd Collapse styled to match the accordion design */
-.lr-accordion .ant-collapse { background: transparent; border: none; display: flex; flex-direction: column; gap: 12px; }
-.lr-accordion .ant-collapse > .ant-collapse-item {
-  border: 1px solid var(--border);
-  border-radius: var(--radius) !important;
-  background: var(--surface);
-  overflow: hidden;
-}
-.lr-accordion .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+/* Community accordion (custom — matches the mockup's colors exactly) */
+.lr-acc { display: flex; flex-direction: column; gap: 12px; }
+.lr-acc-item { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+.lr-acc-head {
+  width: 100%;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   padding: 20px 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
   color: var(--text);
+  text-align: left;
   font-family: var(--serif);
   font-size: 18px;
   font-weight: 600;
 }
-.lr-accordion .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-expand-icon { color: var(--accent); }
-.lr-accordion .ant-collapse-content { background: transparent; border-top: none; color: var(--muted); }
-.lr-accordion .ant-collapse-content-box { padding: 0 22px 22px; font-size: 15px; line-height: 1.7; }
-.lr-accordion .ant-collapse-content-box p { margin: 0 0 12px; }
-.lr-accordion .ant-collapse-content-box p:last-child { margin-bottom: 0; }
-.lr-accordion .ant-collapse-content-box strong { color: var(--text); }
-.lr-accordion .ant-collapse-content-box a { color: var(--accent); }
+.lr-acc-chevron { color: var(--accent); font-size: 15px; line-height: 1; transition: transform .3s ease; }
+.lr-acc-chevron.open { transform: rotate(180deg); }
+.lr-acc-body { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s ease, opacity .35s ease; }
+.lr-acc-body.open { max-height: 1200px; opacity: 1; }
+.lr-acc-content { padding: 0 22px 22px; font-size: 15px; line-height: 1.7; color: var(--muted); }
+.lr-acc-content p { margin: 0 0 12px; }
+.lr-acc-content p:last-child { margin-bottom: 0; }
+.lr-acc-content strong { color: var(--text); font-weight: 700; }
+.lr-acc-content a { color: var(--accent); font-weight: 600; }
+.lr-acc-content a:hover { text-decoration: underline; }
+.lr-channel { color: var(--accent); font-weight: 600; }
 
 /* ===== Prose (apply + event MDX bodies) ===== */
 .lr-prose { font-size: 16px; line-height: 1.8; color: var(--muted); }

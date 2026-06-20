@@ -7,6 +7,7 @@ import axios from "axios"
 import tzdata from "tzdata"
 import { DateTime } from "luxon"
 import DiscordIcon from "@/components/discord-icon"
+import { OrientationTime } from "@/components/schedule"
 import background from "@/images/background.jpg"
 
 const { zones } = tzdata
@@ -67,7 +68,7 @@ const Field = ({ label, name, error, children }) => (
   </div>
 )
 
-const ApplyForm = ({ content }) => {
+const ApplyForm = ({ content, orientation }) => {
   const [form, setForm] = useState({})
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
@@ -231,7 +232,7 @@ const ApplyForm = ({ content }) => {
                 <span className="lr-success-badge hollow">3</span>
                 <div>
                   <div className="lr-success-step-title">Meet the guild</div>
-                  <div className="lr-success-step-desc">Attend the next orientation — Sundays at 12:30 PM EDT.</div>
+                  <div className="lr-success-step-desc">Attend the next orientation — {orientation ? <OrientationTime frontmatter={orientation} /> : "Sundays at 12:30 PM EDT"}.</div>
                 </div>
               </div>
             </div>

@@ -7,13 +7,14 @@ import { getAllEvents, getPageMdx } from "@/lib/events"
 
 export default function Page() {
   const events = getAllEvents()
+  const orientation = events.find((e) => e.slug === "guild-orientation")?.frontmatter ?? null
   const indexSource = getPageMdx("index")
 
   return (
     <>
       <Hero />
       <EventsSection events={events} />
-      <JoinSection />
+      <JoinSection orientation={orientation} />
       <CommunitySection source={indexSource} />
     </>
   )

@@ -62,3 +62,12 @@ export const EventWhen = ({ frontmatter }) => {
   const l = occ[0].toLocal()
   return <>{`${l.toFormat("cccc")}s · ${l.toFormat("h:mm a ZZZZ")}`}</>
 }
+
+// Inline schedule for prose, e.g. "Sundays at 12:30 PM EDT" (localized).
+export const OrientationTime = ({ frontmatter }) => {
+  const mounted = useMounted()
+  const occ = mounted ? eventOccurrences(frontmatter, 3) : []
+  if (!occ.length) return <>{`${fallbackDaysLong(frontmatter)} at ${fallbackTime(frontmatter)}`}</>
+  const l = occ[0].toLocal()
+  return <>{`${l.toFormat("cccc")}s at ${l.toFormat("h:mm a ZZZZ")}`}</>
+}
