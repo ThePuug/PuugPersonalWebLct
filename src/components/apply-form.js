@@ -32,6 +32,29 @@ const CheckIcon = ({ size = 32, stroke = 2.6 }) => (
     <path d="M20 6 9 17l-5-5" />
   </svg>
 )
+const UsersIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>
+)
+const GlobeIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+  </svg>
+)
+const SparkIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 3l2.2 6.6L21 12l-6.8 2.4L12 21l-2.2-6.6L3 12l6.8-2.4z" />
+  </svg>
+)
+
+// Choose a card title + icon from the paragraph's content, so the cards stay
+// correct even if apply.mdx paragraphs are reordered or reworded.
+const cardFor = (text) => {
+  if (/north american/i.test(text)) return { title: "North American servers", Icon: GlobeIcon }
+  if (/inclus|divers|women|lgbt|disab|ethnic|religio|background/i.test(text)) return { title: "Everyone's welcome", Icon: UsersIcon }
+  return { title: null, Icon: SparkIcon }
+}
 
 const Field = ({ label, name, error, children }) => (
   <div className="lr-field">
@@ -44,7 +67,7 @@ const Field = ({ label, name, error, children }) => (
   </div>
 )
 
-const ApplyForm = ({ mdx }) => {
+const ApplyForm = ({ content }) => {
   const [form, setForm] = useState({})
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
@@ -143,10 +166,36 @@ const ApplyForm = ({ mdx }) => {
         </div>
       </section>
 
-      {/* About — sourced from content/apply.mdx */}
+      {/* Mission — content parsed from content/apply.mdx */}
       <section className="lr-apply-about">
-        <div className="lr-prose">{mdx}</div>
+        <span className="lr-eyebrow">Mission statement</span>
+        <h2 className="lr-section-title">Who we&apos;re looking for</h2>
+        {content.lead && <p className="lr-mission-lead">{content.lead}</p>}
+        {content.cards.length > 0 && (
+          <div className="lr-info-grid">
+            {content.cards.map((text, i) => {
+              const { title, Icon } = cardFor(text)
+              return (
+                <div className="lr-info-card" key={i}>
+                  <div className="lr-info-icon"><Icon /></div>
+                  {title && <h3 className="lr-info-title">{title}</h3>}
+                  <p className="lr-info-text">{text}</p>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </section>
+
+      {content.activities.length > 0 && (
+        <section className="lr-activities">
+          <span className="lr-eyebrow">What we get up to</span>
+          <h2 className="lr-section-title">Activities</h2>
+          <div className="lr-tags">
+            {content.activities.map((a) => <span className="lr-tag" key={a}>{a}</span>)}
+          </div>
+        </section>
+      )}
 
       {/* Application form */}
       <section id="apply-form" className="lr-form-section">
