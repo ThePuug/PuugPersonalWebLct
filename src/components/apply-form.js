@@ -1,194 +1,255 @@
-'use client'
+"use client"
 
-import '@ant-design/v5-patch-for-react-19'
-import React, { useState } from "react"
-import styled from "styled-components"
-import tzdata from "tzdata"
+import React, { useEffect, useMemo, useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
 import axios from "axios"
-import { MdxSection, Section } from "@/components/custom"
-import { Button, Card, Drawer, Form, Input, Layout, message, Radio, Result, Select, Steps, Typography } from "antd"
-import { AudioTwoTone, DoubleLeftOutlined, DoubleRightOutlined, IdcardTwoTone, InteractionTwoTone, QuestionCircleTwoTone, SkinTwoTone, SmileTwoTone } from '@ant-design/icons';
+import tzdata from "tzdata"
 import { DateTime } from "luxon"
+import DiscordIcon from "@/components/discord-icon"
+import background from "@/images/background.jpg"
 
 const { zones } = tzdata
-const { TextArea } = Input
-const { Option } = Select
-const { Text } = Typography
-const { Content } = Layout
+const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 
-const UnfoldButton = styled(Button)`
-  position: fixed;
-  bottom: 50px;
-  left: 0;
-  padding-left:1em;
-  border-left:none;
-  border-radius:0 .33em .33em 0;
-  box-shadow:1px 1px 7px #000;
-`
+// Field name -> follow-up question. Keys match the existing /api/apply payload.
+const referralQuestions = {
+  "In Game": "What were you doing?",
+  "Search Engine": "Which search engine?",
+  "Friend or Referral": "Which in-game character?",
+  "Recruitment Post": "Where was it posted?",
+  "Other": "Briefly, explain...",
+}
+const referralOptions = Object.keys(referralQuestions)
 
-const FoldButton = styled(Button)`
-  position:sticky;
-  float:right;
-  margin-right:-24px;
-  bottom: 26px;
-  border-right:none;
-  border-radius:.33em 0 0 .33em;
-  box-shadow:-1px 1px 7px #000;
-`
+const AlertIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 9v4" /><path d="M12 17h.01" /><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+  </svg>
+)
+const CheckIcon = ({ size = 32, stroke = 2.6 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M20 6 9 17l-5-5" />
+  </svg>
+)
 
-const StyledCard = styled(Card)`
-  background-color:#fffc;
-  max-width: 600px;
-  margin: 0 auto;
-  ol {
-    padding-left:1em;
-  }
-`
-
-const StyledSelect = styled(Select)`
-  width:50%;
-`
-
-const StyledDrawer = styled(Drawer)`
-  .ant-drawer-content {
-    background:none;
-  }
-`
+const Field = ({ label, name, error, children }) => (
+  <div className="lr-field">
+    <label className="lr-label" htmlFor={name}>{label} <span className="req">*</span></label>
+    {React.cloneElement(children, {
+      "aria-invalid": error ? true : undefined,
+      "aria-describedby": error ? `${name}-error` : undefined,
+    })}
+    {error && <div className="lr-error" id={`${name}-error`}>{error}</div>}
+  </div>
+)
 
 const ApplyForm = ({ mdx }) => {
-  const [visible, setVisible] = useState(false)
-  const [detailQuestion, setDetailQuestion] = useState(null)
-  const [viewed, setViewed] = useState(false)
-  const [formAction, setFormAction] = useState({ action: "Apply now!", disabled: false })
-  const dto = DateTime.local()
-  const timezoneOptions = Object.entries(zones)
-    .filter(([tz, v]) => Array.isArray(v) && DateTime.local().setZone(tz).isValid)
-    .map(([tz, _]) => {
-      const dt = dto.setZone(tz)
-      return [tz, dt.zoneName.replace(/_/g, ' '), dt.toFormat('Z'), dt.isInDST]
-    })
-    .map(([tz, zone, offset, dst]) => <Option key={tz} value={`[UTC${offset}] ${zone}${dst ? " (DST)" : ""}`}>{zone}</Option>)
+  const [form, setForm] = useState({})
+  const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
-  const onFinish = (values) => {
-    setFormAction({ action: "Please wait...", disabled: true })
-    axios.post('/api/apply', values)
-      .then((res) => {
-        setFormAction({ action: "sent", disabled: true })
-      }).catch((ex) => {
-        message.error("Something went wrong, please try again.")
-        setFormAction({ action: "Send", disabled: false })
+  // Same timezone option format the antd form produced, so the webhook
+  // message reads identically.
+  const timezoneOptions = useMemo(() => {
+    const dto = DateTime.local()
+    return Object.entries(zones)
+      .filter(([tz, v]) => Array.isArray(v) && DateTime.local().setZone(tz).isValid)
+      .map(([tz]) => {
+        const dt = dto.setZone(tz)
+        const value = `[UTC${dt.toFormat("Z")}] ${dt.zoneName.replace(/_/g, " ")}${dt.isInDST ? " (DST)" : ""}`
+        return { value, label: dt.zoneName.replace(/_/g, " ") }
       })
+      .sort((a, b) => a.label.localeCompare(b.label))
+  }, [])
+
+  const setField = (name, value) => {
+    setForm((f) => ({ ...f, [name]: value }))
+    setErrors((e) => ({ ...e, [name]: "" }))
+  }
+  const onChange = (e) => setField(e.target.name, e.target.value)
+
+  const pickReferral = (value) => {
+    setForm((f) => ({ ...f, ReferredFrom: value }))
+    setErrors((e) => ({ ...e, ReferredFrom: "" }))
   }
 
-  const firstFocus = (e) => {
-    if (!viewed) {
-      setViewed(true)
-      setVisible(true)
+  const validate = () => {
+    const f = form
+    const next = {}
+    if (!f.PreferredName) next.PreferredName = "This field is required."
+    if (!f.PreferredPronouns) next.PreferredPronouns = "This field is required."
+    if (!f.Gw2AccountId) next.Gw2AccountId = "This field is required."
+    else if (!/\w+\.\d{4}/.test(f.Gw2AccountId)) next.Gw2AccountId = "Required format: AccountName.1234"
+    if (!f.DiscordId) next.DiscordId = "This field is required."
+    if (!f.AboutMe) next.AboutMe = "This field is required."
+    if (!f.LookingFor) next.LookingFor = "This field is required."
+    if (!f.Timezone) next.Timezone = "This field is required."
+    if (!f.ReferredFrom) next.ReferredFrom = "Please pick one."
+    else if (!f.ReferralDetail) next.ReferralDetail = "This field is required."
+    return next
+  }
+
+  const onSubmit = async () => {
+    const next = validate()
+    if (Object.keys(next).length) { setErrors(next); return }
+    setSubmitting(true)
+    setSubmitError(null)
+    const payload = {
+      PreferredName: form.PreferredName,
+      PreferredPronouns: form.PreferredPronouns,
+      Gw2AccountId: form.Gw2AccountId,
+      DiscordId: form.DiscordId,
+      AboutMe: form.AboutMe,
+      LookingFor: form.LookingFor,
+      Timezone: form.Timezone,
+      ReferredFrom: form.ReferredFrom,
+      ReferralDetail: form.ReferralDetail,
+    }
+    try {
+      await axios.post("/api/apply", payload)
+      setSubmitted(true)
+    } catch (err) {
+      setSubmitError("Something went wrong, please try again.")
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  const unfold = () => {
-    setViewed(true)
-    setVisible(true)
-  }
+  const referralQuestion = form.ReferredFrom ? referralQuestions[form.ReferredFrom] : null
 
-  return <>
-    <StyledDrawer title="You can close this window at any time" open={visible} placement="left" width="90%"
-      onClose={() => setVisible(false)}
-      styles={{ content: { background: "none" }, wrapper: { maxWidth: 1199, backgroundColor: "#fffc" }, header: { backgroundColor: "#fffc" } }}>
-        <MdxSection>
-          {mdx}
-        </MdxSection>
-      <FoldButton size="large" type="primary" icon={<DoubleLeftOutlined />} onClick={() => setVisible(false)}>Return to application form</FoldButton>
-    </StyledDrawer>
-    <Content>
-      <Section transparent>
-        <StyledCard title="Join us!">
-          {formAction.action !== "sent" &&
-            <Form colon={false} onFinish={onFinish} onFinishFailed={() => { }} labelCol={{ span: 8 }} onFocus={firstFocus}>
-              <Form.Item required={false} name="PreferredName" label="Preferred Name" rules={[
-                { required: true, message: "This field is required." }]
-              }>
-                <Input size="large" placeholder="What should others call you by" maxLength={50} prefix={<SkinTwoTone />} />
-              </Form.Item>
-              <Form.Item required={false} name="PreferredPronouns" label="Preferred Pronouns" rules={[
-                { required: true, message: "This fields is required." }
-              ]}>
-                <Input size="large" placeholder="He / She / Sie / They" maxLength={15} prefix={<InteractionTwoTone />} />
-              </Form.Item>
-              <Form.Item required={false} name="Gw2AccountId" label="GW2 Account ID" rules={[
-                { required: true, message: "This field is required." },
-                { pattern: new RegExp("\\w+\\.\\d{4}"), message: "Required format is: AccountName.1234" }
-              ]}>
-                <Input size="large" placeholder="AccountName.1234" maxLength={50} prefix={<IdcardTwoTone />} />
-              </Form.Item>
-              <Form.Item required={false} name="DiscordId" label="Discord ID" rules={[
-                { required: true, message: "This field is required." }
-              ]}>
-                <Input size="large" placeholder="Username" maxLength={50} prefix={<AudioTwoTone />} />
-              </Form.Item>
-              <Form.Item required={false} name="AboutMe" label="Tell us about yourself" labelCol={{ span: 24 }} rules={[
-                { required: true, message: "This field is required." }
-              ]}>
-                <TextArea placeholder="Gaming background / Play style" showCount={true} maxLength={470} rows={5} />
-              </Form.Item>
-              <Form.Item required={false} name="LookingFor" label="What are you looking for in a guild" labelCol={{ span: 24 }} rules={[
-                { required: true, message: "This field is required." }
-              ]}>
-                <TextArea showCount={true} maxLength={470} rows={5} />
-              </Form.Item>
-              <Form.Item required={false} name="Timezone" label="Select your timezone" rules={[
-                { required: true, message: "This field is required." }
-              ]}>
-                <StyledSelect showSearch placeholder="Start typing..." optionFilterProp="children"
-                  filterOption={(i, o) => o.children.toLowerCase().indexOf(i.toLowerCase()) >= 0}
-                  filterSort={(a, b) => a.children.toLowerCase().localeCompare(b.children.toLowerCase())}
-                >
-                  {timezoneOptions}
-                </StyledSelect>
-              </Form.Item>
-              <Form.Item required={false} name="ReferredFrom" label="How did you hear about us?" rules={[
-                { required: true, message: "This field is required." }
-              ]}>
-                <Radio.Group size="small" optionType="button" onChange={(e) => {
-                  console.log(e.target.value)
-                  if (e.target.value === "In Game") setDetailQuestion("What were you doing?")
-                  if (e.target.value === "Search Engine") setDetailQuestion("Which search engine?")
-                  if (e.target.value === "Friend or Referral") setDetailQuestion("Which in-game character?")
-                  if (e.target.value === "Recruitment Post") setDetailQuestion("Where was it posted?")
-                  if (e.target.value === "Other") setDetailQuestion("Briefly, explain...")
-                }}>
-                  <Radio.Button key="In Game" value="In Game">In Game</Radio.Button>
-                  <Radio.Button key="Search Engine" value="Search Engine">Search Engine</Radio.Button>
-                  <Radio.Button key="Friend or Referral" value="Friend or Referral">Friend or Referral</Radio.Button>
-                  <Radio.Button key="Recruitment Post" value="Recruitment Post">Recruitment Post</Radio.Button>
-                  <Radio.Button key="Other" value="Other">Other</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-              {detailQuestion &&
-                <Form.Item required={false} name="ReferralDetail" label={detailQuestion} rules={[
-                  { required: true, message: "This field is required." }
-                ]}>
-                  <Input size="large" maxLength={50} prefix={<QuestionCircleTwoTone />} />
-                </Form.Item>
-              }
-              <Button block type="primary" htmlType="submit" disabled={formAction.disabled}>{formAction.action}</Button>
-            </Form>
-          }
-          {formAction.action === "sent" &&
-            <Result icon={<SmileTwoTone />} title="Application submitted!" subTitle="There's a couple steps left">
-              <Steps direction="vertical" current={1} items={[
-                { key: 1, title: "Apply", description: "Submit your application" },
-                { key: 2, title: "Connect", description: <Text strong>Connect to our <a href="https://discord.gg/TefAuR4m5c">Discord server</a></Text> },
-                { key: 3, title: "Meet", description: "Attend the next Guild Orientation, Sundays at 12:30 PM" },
-              ]} />
-            </Result>
-          }
-        </StyledCard>
-      </Section>
-      { !visible && <UnfoldButton size="large" type="primary" icon={<DoubleRightOutlined/>} onClick={unfold} />}
-    </Content>
-  </>
+  return (
+    <>
+      {/* Hero */}
+      <section className="lr-apply-hero">
+        <div className="lr-hero-bg">
+          <Image src={background} alt="" fill priority placeholder="blur" sizes="100vw" style={{ objectFit: "cover" }} />
+        </div>
+        <div className="lr-apply-hero-fade" />
+        <div className="lr-apply-hero-inner">
+          <span className="lr-badge"><AlertIcon /> Read this first</span>
+          <h1 className="lr-apply-title">Before you apply</h1>
+          <p className="lr-apply-lead">
+            We recruit for character, not hours played. A few things worth knowing before you reach out — then fill out the form below and we&apos;ll be in touch on Discord.
+          </p>
+          <div className="lr-apply-cta">
+            <a href="#apply-form" className="lr-btn lr-btn-lg lr-btn-primary">Jump to the form ↓</a>
+            <Link href="/#community" className="lr-btn lr-btn-lg lr-btn-ghost">About the guild</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* About — sourced from content/apply.mdx */}
+      <section className="lr-apply-about">
+        <div className="lr-prose">{mdx}</div>
+      </section>
+
+      {/* Application form */}
+      <section id="apply-form" className="lr-form-section">
+        <div className="lr-form-head">
+          <span className="lr-eyebrow">The application</span>
+          <h2 className="lr-section-title">Join us</h2>
+          <p>
+            Tell us a little about yourself. Prefer chat? You can also type <strong>?apply</strong> in <span className="accent">#apply-here</span> on Discord.
+          </p>
+        </div>
+
+        {submitted ? (
+          <div className="lr-success">
+            <div className="lr-success-check"><CheckIcon /></div>
+            <h3>Application submitted</h3>
+            <p className="lr-success-sub">Nice to meet you. There are just a couple steps left.</p>
+            <div className="lr-success-steps">
+              <div className="lr-success-step done">
+                <span className="lr-success-badge filled"><CheckIcon size={16} stroke={3} /></span>
+                <div>
+                  <div className="lr-success-step-title">Application sent</div>
+                  <div className="lr-success-step-desc">We&apos;ve got your details.</div>
+                </div>
+              </div>
+              <div className="lr-success-step">
+                <span className="lr-success-badge hollow">2</span>
+                <div>
+                  <div className="lr-success-step-title">Connect on Discord</div>
+                  <div className="lr-success-step-desc">Join our <a href={DISCORD_URL} target="_blank" rel="noopener">Discord server</a> so we can reach you.</div>
+                </div>
+              </div>
+              <div className="lr-success-step">
+                <span className="lr-success-badge hollow">3</span>
+                <div>
+                  <div className="lr-success-step-title">Meet the guild</div>
+                  <div className="lr-success-step-desc">Attend the next orientation — Sundays at 12:30 PM EDT.</div>
+                </div>
+              </div>
+            </div>
+            <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-primary">
+              <DiscordIcon size={19} /> Open our Discord
+            </a>
+          </div>
+        ) : (
+          <div className="lr-form-card">
+            <div className="lr-field-grid">
+              <Field label="Preferred name" name="PreferredName" error={errors.PreferredName}>
+                <input id="PreferredName" name="PreferredName" className="lr-input" maxLength={50} placeholder="What should others call you?" value={form.PreferredName || ""} onChange={onChange} />
+              </Field>
+              <Field label="Preferred pronouns" name="PreferredPronouns" error={errors.PreferredPronouns}>
+                <input id="PreferredPronouns" name="PreferredPronouns" className="lr-input" maxLength={15} placeholder="He / She / They / Sie" value={form.PreferredPronouns || ""} onChange={onChange} />
+              </Field>
+              <Field label="GW2 account ID" name="Gw2AccountId" error={errors.Gw2AccountId}>
+                <input id="Gw2AccountId" name="Gw2AccountId" className="lr-input" maxLength={50} placeholder="AccountName.1234" value={form.Gw2AccountId || ""} onChange={onChange} />
+              </Field>
+              <Field label="Discord username" name="DiscordId" error={errors.DiscordId}>
+                <input id="DiscordId" name="DiscordId" className="lr-input" maxLength={50} placeholder="yourname" value={form.DiscordId || ""} onChange={onChange} />
+              </Field>
+            </div>
+
+            <Field label="Tell us about yourself" name="AboutMe" error={errors.AboutMe}>
+              <textarea id="AboutMe" name="AboutMe" className="lr-textarea" maxLength={470} rows={4} placeholder="Your gaming background and play style…" value={form.AboutMe || ""} onChange={onChange} />
+            </Field>
+
+            <Field label="What are you looking for in a guild?" name="LookingFor" error={errors.LookingFor}>
+              <textarea id="LookingFor" name="LookingFor" className="lr-textarea" maxLength={470} rows={4} placeholder="What matters most to you in a community…" value={form.LookingFor || ""} onChange={onChange} />
+            </Field>
+
+            <Field label="Your timezone" name="Timezone" error={errors.Timezone}>
+              <select id="Timezone" name="Timezone" className="lr-select" value={form.Timezone || ""} onChange={onChange}>
+                <option value="">Select your timezone…</option>
+                {mounted && timezoneOptions.map((tz) => <option key={tz.value} value={tz.value}>{tz.label}</option>)}
+              </select>
+            </Field>
+
+            <div className="lr-field" role="group" aria-labelledby="referred-label" aria-describedby={errors.ReferredFrom ? "ReferredFrom-error" : undefined}>
+              <span className="lr-label" id="referred-label">How did you hear about us? <span className="req">*</span></span>
+              <div className="lr-chip-row">
+                {referralOptions.map((opt) => (
+                  <button type="button" key={opt} aria-pressed={form.ReferredFrom === opt} className={`lr-chip${form.ReferredFrom === opt ? " active" : ""}`} onClick={() => pickReferral(opt)}>
+                    {opt}
+                  </button>
+                ))}
+              </div>
+              {errors.ReferredFrom && <div className="lr-error" id="ReferredFrom-error">{errors.ReferredFrom}</div>}
+            </div>
+
+            {referralQuestion && (
+              <Field label={referralQuestion} name="ReferralDetail" error={errors.ReferralDetail}>
+                <input id="ReferralDetail" name="ReferralDetail" className="lr-input" maxLength={50} placeholder="A quick detail…" value={form.ReferralDetail || ""} onChange={onChange} />
+              </Field>
+            )}
+
+            <button type="button" className="lr-submit" onClick={onSubmit} disabled={submitting}>
+              {submitting ? "Sending…" : "Submit application"}
+            </button>
+            {submitError && <div className="lr-error" style={{ textAlign: "center", marginTop: 12 }}>{submitError}</div>}
+            <p className="lr-form-fineprint">By applying you agree to our zero-tolerance stance on toxicity and discrimination.</p>
+          </div>
+        )}
+      </section>
+    </>
+  )
 }
 
 export default ApplyForm

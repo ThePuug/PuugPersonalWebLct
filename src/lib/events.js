@@ -9,6 +9,19 @@ const readMdx = (filePath) => {
   return matter(fs.readFileSync(filePath, "utf8"))
 }
 
+const readManifest = () => {
+  const manifestPath = path.join(process.cwd(), "public", "organizers", "manifest.json")
+  return fs.existsSync(manifestPath)
+    ? JSON.parse(fs.readFileSync(manifestPath, "utf8"))
+    : {}
+}
+
+const resolveOrganizers = (usernames, manifest) =>
+  (usernames || []).map((username) => ({
+    username,
+    avatarSrc: manifest[username] || null,
+  }))
+
 const toSummary = (slug, data, content) => {
   return {
     slug,
@@ -34,26 +47,23 @@ export function getEventSlugs() {
 }
 
 export function getAllEvents() {
+  const manifest = readManifest()
   return getEventSlugs().map((slug) => {
     const { data, content } = readMdx(path.join(eventsDir, slug + ".mdx"))
-    return toSummary(slug, data, content)
+    return {
+      ...toSummary(slug, data, content),
+      organizers: resolveOrganizers(data.organizers, manifest),
+    }
   })
 }
 
 export function getEvent(slug) {
   const { data, content } = readMdx(path.join(eventsDir, slug + ".mdx"))
-  const manifestPath = path.join(process.cwd(), "public", "organizers", "manifest.json")
-  const manifest = fs.existsSync(manifestPath)
-    ? JSON.parse(fs.readFileSync(manifestPath, "utf8"))
-    : {}
-  const organizers = (data.organizers || []).map((username) => ({
-    username,
-    avatarSrc: manifest[username] || null,
-  }))
+  const manifest = readManifest()
   return {
     ...toSummary(slug, data, content),
     body: content,
-    organizers,
+    organizers: resolveOrganizers(data.organizers, manifest),
   }
 }
 

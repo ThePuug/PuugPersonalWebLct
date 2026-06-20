@@ -1,18 +1,28 @@
 import "./global.css"
+import { Cinzel, Manrope } from "next/font/google"
 import { AntdRegistry } from "@ant-design/nextjs-registry"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import StyledComponentsRegistry from "@/components/styled-components-registry"
+import ThemeProvider from "@/components/theme-provider"
 import AppFrame from "@/components/header"
 
-export const metadata = { title: 'Liars, Cheats, and Thieves' }
+const cinzel = Cinzel({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-cinzel", display: "swap" })
+const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-manrope", display: "swap" })
+
+export const metadata = {
+  title: "Liars, Cheats, and Thieves",
+  description: "A community-focused Guild Wars 2 guild on NA servers — together since the days of Guild Wars 1. Casual to hardcore, brand-new to veteran.",
+}
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${cinzel.variable} ${manrope.variable}`}>
       <body>
         <AntdRegistry>
           <StyledComponentsRegistry>
-            <AppFrame>{children}</AppFrame>
+            <ThemeProvider>
+              <AppFrame>{children}</AppFrame>
+            </ThemeProvider>
           </StyledComponentsRegistry>
         </AntdRegistry>
         <GoogleAnalytics gaId="G-59PBRENWD6" />
