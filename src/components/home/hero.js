@@ -9,7 +9,7 @@ const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 
 const stats = [
   { num: "20+ yrs", label: "Since GW1" },
-  { num: "4", label: "Guild alliance" },
+  { num: "3", label: "Guild alliance" },
   { num: "3+", label: "Weekly events" },
   { num: "0", label: "Tolerance for toxicity" },
 ]
