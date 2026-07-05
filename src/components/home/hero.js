@@ -35,7 +35,7 @@ const Hero = () => (
         <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-primary">
           <DiscordIcon size={20} /> Join us on Discord
         </a>
-        <Link href="/apply#apply-form" className="lr-btn lr-btn-lg lr-btn-ghost">How to apply →</Link>
+        <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-ghost">How to apply →</Link>
       </div>
       <div className="lr-stats">
         {stats.map((s) => (

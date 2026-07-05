@@ -12,7 +12,7 @@ const JoinSection = ({ orientation }) => {
 
   const steps = [
     {
-      title: <>Fill out the <Link href="/apply#apply-form">application</Link></>,
+      title: <>Fill out the <Link href="/apply">application</Link></>,
       desc: "A few quick questions about you and your play style — takes a couple of minutes.",
     },
     {
@@ -37,7 +37,7 @@ const JoinSection = ({ orientation }) => {
               We recruit for character, not hours played — women, LGBTQ+ folks, people with disabilities, and players of every background are genuinely welcome. Three steps and you&apos;re in.
             </p>
             <div className="lr-join-actions">
-              <Link href="/apply#apply-form" className="lr-btn lr-btn-lg lr-btn-primary">Apply to join →</Link>
+              <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary">Apply to join →</Link>
               <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-ghost">
                 <DiscordIcon size={19} /> Open our Discord
               </a>
