@@ -1,7 +1,10 @@
 import ApplyForm from "@/components/apply-form"
-import { getPageMdx } from "@/lib/events"
-import { MdxBody } from "@/lib/mdx"
+import { getAllEvents, getPageMdx } from "@/lib/events"
+import { parseApplyContent } from "@/lib/apply-content"
+
+export const metadata = { title: "Apply · Liars, Cheats, and Thieves" }
 
 export default function Page() {
-  return <ApplyForm mdx={<MdxBody source={getPageMdx('apply')} />} />
+  const orientation = getAllEvents().find((e) => e.slug === "guild-orientation")?.frontmatter ?? null
+  return <ApplyForm content={parseApplyContent(getPageMdx("apply"))} orientation={orientation} />
 }

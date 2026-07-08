@@ -1,55 +1,19 @@
 import * as React from "react"
 import Link from "next/link"
 
-export const metadata = { title: 'Not found' }
+export const metadata = { title: "Not found · Liars, Cheats, and Thieves" }
 
-// styles
-const pageStyles = {
-  color: "#232129",
-  padding: "96px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
-
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
-
-// markup
-const NotFoundPage = () => {
-  return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry{" "}
-        <span role="img" aria-label="Pensive emoji">
-          😔
-        </span>{" "}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/app/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link href="/">Go home</Link>.
-      </p>
-    </main>
-  )
-}
+const NotFoundPage = () => (
+  <div className="lr-notfound">
+    <span className="lr-eyebrow">404</span>
+    <h1>Page not found</h1>
+    <p>
+      Sorry{" "}
+      <span role="img" aria-label="Pensive emoji">😔</span>{" "}
+      we couldn&apos;t find what you were looking for.
+    </p>
+    <Link href="/" className="lr-btn lr-btn-lg lr-btn-primary">Go home →</Link>
+  </div>
+)
 
 export default NotFoundPage
