@@ -1,12 +1,11 @@
+// --- IMPORTS ---
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import DiscordIcon from "@/components/discord-icon"
 import background from "@/images/background.jpg"
 import logo from "@/images/logo.png"
 
-const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
-
+// --- DATA ---
 const stats = [
   { num: "20+", label: "Years Active" },
   { num: "3", label: "Alliance Guilds" },
@@ -14,6 +13,7 @@ const stats = [
   { num: "0", label: "Tolerance For Toxicity" },
 ]
 
+// --- COMPONENTS ---
 const Hero = () => (
   <section id="top" className="lr-hero">
     <div className="lr-hero-bg">
@@ -32,10 +32,7 @@ const Hero = () => (
         Whether you're stepping into the game for the first time or tackling challenging content, there's a spot for you here.
       </p>
       <div className="lr-hero-cta">
-        <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-primary">
-          <DiscordIcon size={20} /> Join us on Discord
-        </a>
-        <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-ghost">How to apply →</Link>
+        <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary">How to apply →</Link>
       </div>
       <div className="lr-stats">
         {stats.map((s) => (
@@ -49,4 +46,5 @@ const Hero = () => (
   </section>
 )
 
+// --- EXPORTS ---
 export default Hero
