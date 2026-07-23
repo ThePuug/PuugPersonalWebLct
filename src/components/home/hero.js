@@ -8,10 +8,10 @@ import logo from "@/images/logo.png"
 const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 
 const stats = [
-  { num: "20+ yrs", label: "Since GW1" },
-  { num: "3", label: "Guild alliance" },
+  { num: "20+", label: "Years Active" },
+  { num: "3", label: "Alliance Guilds" },
   { num: "3+", label: "Weekly events" },
-  { num: "0", label: "Tolerance for toxicity" },
+  { num: "0", label: "Tolerance For Toxicity" },
 ]
 
 const Hero = () => (
@@ -26,10 +26,10 @@ const Hero = () => (
         <Image src={logo} alt="Liars, Cheats and Thieves" className="lr-hero-logo" priority />
       </h1>
       <p className="lr-hero-lead">
-        A home away from home for gamers. We&apos;ve stuck together since the days of Guild Wars 1 — built on human connection, not just a tag to wear.
+        We’ve built a home away from home for gamers since the days of Guild Wars 1.
       </p>
       <p className="lr-hero-sub">
-        Casual to hardcore, brand-new to veteran. If you&apos;re on a NA server and want people to play with, you&apos;ll fit right in.
+        Whether you're stepping into the game for the first time or tackling challenging content, there's a spot for you here.
       </p>
       <div className="lr-hero-cta">
         <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-primary">
