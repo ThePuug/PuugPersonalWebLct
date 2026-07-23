@@ -72,7 +72,7 @@ const EventsSection = ({ events }) => {
           <h2 className="lr-section-title">Weekly Events</h2>
         </div>
         <p className="lr-section-note">
-          Events run because members step forward to lead them. Here&apos;s what&apos;s on the calendar this week — shown in your local time.
+          Here&apos;s what&apos;s on the calendar this week, shown in your local time.
         </p>
       </div>
       <div className="lr-event-grid">
