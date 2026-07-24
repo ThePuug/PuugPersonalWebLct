@@ -8,20 +8,20 @@ const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 const JoinSection = ({ orientation }) => {
   const orientationWhen = orientation
     ? <OrientationTime frontmatter={orientation} />
-    : "Sundays at 12:30 PM EDT"
+    : "Sundays at 12:30 PM EDT (UTC-4)"
 
   const steps = [
     {
       title: <>Fill out the <Link href="/apply">application</Link></>,
-      desc: "A few quick questions about you and your play style — takes a couple of minutes.",
+      desc: "A few quick questions about you and your play style.",
     },
     {
       title: "Join the Discord",
-      desc: "Hop in and say hello — it's where the guild really lives, and how we'll reach you.",
+      desc: "Confirm where we can reach you.",
     },
     {
       title: "Come to orientation",
-      desc: <>{orientationWhen} — meet everyone and get settled in.</>,
+      desc: <>{orientationWhen} — meet everyone and get settled in!</>,
     },
   ]
 
@@ -34,12 +34,10 @@ const JoinSection = ({ orientation }) => {
             <span className="lr-eyebrow">Ready when you are</span>
             <h2 className="lr-join-title">Become part of the guild</h2>
             <p className="lr-join-lead">
-              We recruit for character, not hours played — women, LGBTQ+ folks, people with disabilities, and players of every background are genuinely welcome. Three steps and you&apos;re in.
+              We recruit for character, not hours played. Adventurers from all walks of life and background are genuinely welcome. Three steps and you&apos;re in.
             </p>
             <div className="lr-join-actions">
               <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary">Apply to join →</Link>
-              <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-ghost">
-                <DiscordIcon size={19} /> Open our Discord
               </a>
             </div>
           </div>
