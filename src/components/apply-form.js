@@ -203,9 +203,9 @@ const ApplyForm = ({ content, orientation }) => {
       <section id="apply-form" className="lr-form-section">
         <div className="lr-form-head">
           <span className="lr-eyebrow">The application</span>
-          <h2 className="lr-section-title">Join us</h2>
+          <h2 className="lr-section-title">Ready to Join?</h2>
           <p>
-            Tell us a little about yourself. Prefer chat? You can also type <strong className="lr-tag-guild">?apply</strong> in <span className="lr-tag-channel">#apply-here</span> on Discord.
+            Tell us a bit about who you are and what you're looking for in a guild. After submitting this form, you'll receive instructions to connect with us on Discord.
           </p>
         </div>
 
