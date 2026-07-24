@@ -1,14 +1,14 @@
+// --- IMPORTS ---
 import React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import DiscordIcon from "@/components/discord-icon"
 import { MdxBody } from "@/lib/mdx"
 import { extractToc } from "@/lib/toc"
 import { eventComponents } from "@/components/event/mdx-components"
 import { EventDates, EventWhen } from "@/components/schedule"
 import { highlightTags } from "@/lib/highlight"
 
-const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
+// --- HELPERS ---
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
 const BackIcon = () => (
@@ -20,6 +20,7 @@ const BackIcon = () => (
 const ledByNames = (organizers) =>
   organizers.map((o) => `@${o.username}`).join(" & ")
 
+// --- COMPONENTS ---
 const EventArticle = ({ event }) => {
   const { frontmatter, organizers, body } = event
   const toc = extractToc(body)
@@ -87,11 +88,11 @@ const EventArticle = ({ event }) => {
             <div className="lr-ev-cta">
               <div>
                 <div className="lr-ev-cta-title">See you {day}?</div>
-                <div className="lr-ev-cta-sub">Hop into Discord and join the squad.</div>
+                <div className="lr-ev-cta-sub">Submit an application to get started with our squad.</div>
               </div>
-              <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-primary" style={{ flex: "none" }}>
-                <DiscordIcon size={18} /> Join on Discord
-              </a>
+              <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary" style={{ flex: "none" }}>
+                Apply to join →
+              </Link>
             </div>
           </article>
         </div>
@@ -100,4 +101,5 @@ const EventArticle = ({ event }) => {
   )
 }
 
+// --- EXPORTS ---
 export default EventArticle
