@@ -17,7 +17,7 @@ const steps = [
   {
     num: "03",
     title: "Attend Sunday Orientation",
-    desc: "Show up for our weekly orientation on Discord, Sundays at 11:30 AM EST.",
+    desc: "Show up for our weekly orientation on Discord, Sundays at 12:30 PM EST.",
   },
 ]
 
