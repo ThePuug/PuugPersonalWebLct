@@ -31,8 +31,8 @@ const JoinSection = ({ orientation }) => {
         <div className="lr-join-glow" />
         <div className="lr-join-grid">
           <div>
-            <span className="lr-eyebrow">Ready when you are</span>
-            <h2 className="lr-join-title">Become part of the guild</h2>
+            <span className="lr-eyebrow">Join our legendary Guild</span>
+            <h2 className="lr-join-title">Become part of our history</h2>
             <p className="lr-join-lead">
               We recruit for character, not hours played. Adventurers from all walks of life and background are genuinely welcome. Three steps and you&apos;re in.
             </p>
