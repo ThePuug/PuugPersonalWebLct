@@ -159,7 +159,7 @@ const ApplyForm = ({ content, orientation }) => {
           <span className="lr-badge"><AlertIcon /> Read this first</span>
           <h1 className="lr-apply-title">Before you apply</h1>
           <p className="lr-apply-lead">
-            We recruit for character, not hours played. A few things worth knowing before you reach out — then fill out the form below and we&apos;ll be in touch on Discord.
+            We recruit for character, not hours played. A few things worth knowing:
           </p>
           <div className="lr-apply-cta">
             <a href="#apply-form" className="lr-btn lr-btn-lg lr-btn-primary">Jump to the form ↓</a>
