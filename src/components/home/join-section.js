@@ -17,7 +17,7 @@ const steps = [
   {
     num: "03",
     title: "Attend Sunday Orientation",
-    desc: "Show up for our weekly orientation on Discord, Sundays at 12:30 PM EST.",
+    desc: "Show up for our weekly orientation on Discord, Sundays at 11:30 AM EST.",
   },
 ]
 
@@ -25,13 +25,13 @@ const steps = [
 const JoinSection = () => (
   <section id="apply" className="lr-join">
     <div className="lr-join-inner">
-      <div className="lr-join-header">
+      <div className="lr-join-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
         <span className="lr-kicker">THE APPLICATION</span>
         <h2 className="lr-h2">Ready to Join?</h2>
         <p className="lr-join-lead">
           Tell us a little about yourself below. Once submitted, you'll complete your check-in through our Discord server.
         </p>
-        <div className="lr-join-actions">
+        <div className="lr-join-actions" style={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary">
             Apply to join
           </Link>
