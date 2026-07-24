@@ -162,7 +162,6 @@ const ApplyForm = ({ content, orientation }) => {
             We recruit for character, not hours played. A few things worth knowing:
           </p>
           <div className="lr-apply-cta">
-            <a href="#apply-form" className="lr-btn lr-btn-lg lr-btn-primary">Jump to the form ↓</a>
             <Link href="/#community" className="lr-btn lr-btn-lg lr-btn-ghost">About the guild</Link>
           </div>
         </div>
