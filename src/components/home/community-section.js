@@ -8,7 +8,7 @@ const CommunitySection = ({ source }) => (
   <section id="community" className="lr-community">
     <div className="lr-community-head">
       <h2 className="lr-section-title">More than a guild tag</h2>
-      <p>At our core, we prioritize genuine human interaction above all else. The priorities below show how we put mutual respect, patience, and community into practice every day:</p>
+      <p>At our core, we prioritize genuine human interaction above all else. The pillars below show how we put mutual respect, patience, and community into practice every day:</p>
     </div>
     <MdxBody source={source} components={communityComponents} />
   </section>
