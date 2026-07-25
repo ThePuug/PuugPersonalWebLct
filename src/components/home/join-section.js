@@ -7,7 +7,7 @@ const steps = [
   {
     num: "01",
     title: "Submit Web Application",
-    desc: "Fill out the application form on our site to tell us a little about yourself.",
+    desc: "Fill out the application form to tell us a little about yourself.",
   },
   {
     num: "02",
@@ -22,7 +22,7 @@ const steps = [
   {
     num: "03",
     title: "Attend Sunday Orientation",
-    desc: "Show up for our weekly orientation on Discord, Sundays at 11:30 AM EST.",
+    desc: "Show up for our weekly orientation on Discord, Sundays at 12:30 PM EST.",
   },
 ]
 
@@ -33,7 +33,7 @@ const JoinSection = () => (
       <div className="lr-join-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "3rem" }}>
         <h2 className="lr-h2">Ready to Join?</h2>
         <p className="lr-join-lead">
-          Becoming a member is simple—just follow these three easy steps to complete your check-in and get started.
+          Becoming a member is simple! Just follow these three easy steps to complete your check-in and get started!
         </p>
       </div>
       <div className="lr-steps">
