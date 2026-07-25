@@ -12,7 +12,12 @@ const steps = [
   {
     num: "02",
     title: "Start Discord Check-in",
-    desc: "Head over to the #apply-here channel in our Discord and type ?apply to begin.",
+    desc: (
+      <>
+        Head over to the #apply-here channel in our Discord and type{" "}
+        <span style={{ whiteSpace: "nowrap" }}>?apply</span> to begin.
+      </>
+    ),
   },
   {
     num: "03",
@@ -26,16 +31,10 @@ const JoinSection = () => (
   <section id="apply" className="lr-join">
     <div className="lr-join-inner">
       <div className="lr-join-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "3rem" }}>
-        <span className="lr-kicker">THE APPLICATION</span>
         <h2 className="lr-h2">Ready to Join?</h2>
         <p className="lr-join-lead">
-          Tell us a little about yourself below. Once submitted, you'll complete your check-in through our Discord server.
+          Becoming a member is simple—just follow these three easy steps to complete your check-in and get started.
         </p>
-        <div className="lr-join-actions" style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary">
-            Apply to join
-          </Link>
-        </div>
       </div>
       <div className="lr-steps">
         {steps.map((s) => (
@@ -45,6 +44,11 @@ const JoinSection = () => (
             <p className="lr-step-desc">{s.desc}</p>
           </div>
         ))}
+      </div>
+      <div className="lr-join-actions" style={{ display: "flex", justifyContent: "center", width: "100%", marginTop: "3rem" }}>
+        <Link href="/apply" className="lr-btn lr-btn-lg lr-btn-primary">
+          Apply to join
+        </Link>
       </div>
     </div>
   </section>
