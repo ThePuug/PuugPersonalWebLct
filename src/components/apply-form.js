@@ -1,5 +1,6 @@
 "use client"
 
+// CATEGORY: EXTERNAL DEPENDENCIES
 import React, { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -11,10 +12,10 @@ import { OrientationTime } from "@/components/schedule"
 import { highlightTags } from "@/lib/highlight"
 import background from "@/images/background.jpg"
 
+// CATEGORY: CONSTANTS & HELPERS
 const { zones } = tzdata
 const DISCORD_URL = "https://discord.gg/TefAuR4m5c"
 
-// Field name -> follow-up question. Keys match the existing /api/apply payload.
 const referralQuestions = {
   "In Game": "What were you doing?",
   "Search Engine": "Which search engine?",
@@ -24,6 +25,7 @@ const referralQuestions = {
 }
 const referralOptions = Object.keys(referralQuestions)
 
+// CATEGORY: ICONS
 const AlertIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 9v4" /><path d="M12 17h.01" /><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
@@ -41,7 +43,7 @@ const UsersIcon = () => (
 )
 const GlobeIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    <circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z" />
   </svg>
 )
 const SparkIcon = () => (
@@ -50,17 +52,18 @@ const SparkIcon = () => (
   </svg>
 )
 
-// Choose a card title + icon from the paragraph's content, so the cards stay
-// correct even if apply.mdx paragraphs are reordered or reworded.
 const cardFor = (text) => {
   if (/north american/i.test(text)) return { title: "North American servers", Icon: GlobeIcon }
   if (/inclus|divers|women|lgbt|disab|ethnic|religio|background/i.test(text)) return { title: "Everyone's welcome", Icon: UsersIcon }
   return { title: null, Icon: SparkIcon }
 }
 
-const Field = ({ label, name, error, children }) => (
+// CATEGORY: FORM FIELD COMPONENT
+const Field = ({ label, name, error, children, required = true }) => (
   <div className="lr-field">
-    <label className="lr-label" htmlFor={name}>{label} <span className="req">*</span></label>
+    <label className="lr-label" htmlFor={name}>
+      {label} {required && <span className="req">*</span>}
+    </label>
     {React.cloneElement(children, {
       "aria-invalid": error ? true : undefined,
       "aria-describedby": error ? `${name}-error` : undefined,
@@ -69,6 +72,7 @@ const Field = ({ label, name, error, children }) => (
   </div>
 )
 
+// CATEGORY: MAIN FORM COMPONENT
 const ApplyForm = ({ content, orientation }) => {
   const [form, setForm] = useState({})
   const [errors, setErrors] = useState({})
@@ -78,8 +82,6 @@ const ApplyForm = ({ content, orientation }) => {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
-  // Same timezone option format as the original form, so the webhook
-  // message reads identically.
   const timezoneOptions = useMemo(() => {
     const dto = DateTime.local()
     return Object.entries(zones)
@@ -103,11 +105,11 @@ const ApplyForm = ({ content, orientation }) => {
     setErrors((e) => ({ ...e, ReferredFrom: "" }))
   }
 
+  // CATEGORY: FORM VALIDATION
   const validate = () => {
     const f = form
     const next = {}
     if (!f.PreferredName) next.PreferredName = "This field is required."
-    if (!f.PreferredPronouns) next.PreferredPronouns = "This field is required."
     if (!f.Gw2AccountId) next.Gw2AccountId = "This field is required."
     else if (!/\w+\.\d{4}/.test(f.Gw2AccountId)) next.Gw2AccountId = "Required format: AccountName.1234"
     if (!f.DiscordId) next.DiscordId = "This field is required."
@@ -119,6 +121,7 @@ const ApplyForm = ({ content, orientation }) => {
     return next
   }
 
+  // CATEGORY: FORM SUBMISSION
   const onSubmit = async () => {
     const next = validate()
     if (Object.keys(next).length) { setErrors(next); return }
@@ -126,7 +129,7 @@ const ApplyForm = ({ content, orientation }) => {
     setSubmitError(null)
     const payload = {
       PreferredName: form.PreferredName,
-      PreferredPronouns: form.PreferredPronouns,
+      PreferredPronouns: form.PreferredPronouns || "",
       Gw2AccountId: form.Gw2AccountId,
       DiscordId: form.DiscordId,
       AboutMe: form.AboutMe,
@@ -149,7 +152,7 @@ const ApplyForm = ({ content, orientation }) => {
 
   return (
     <>
-      {/* Hero */}
+      {/* CATEGORY: HERO SECTION */}
       <section className="lr-apply-hero">
         <div className="lr-hero-bg">
           <Image src={background} alt="" fill priority placeholder="blur" sizes="100vw" style={{ objectFit: "cover" }} />
@@ -167,7 +170,7 @@ const ApplyForm = ({ content, orientation }) => {
         </div>
       </section>
 
-      {/* Mission — content parsed from content/apply.mdx */}
+      {/* CATEGORY: MISSION SECTION */}
       <section className="lr-apply-about">
         <span className="lr-eyebrow">Mission statement</span>
         <h2 className="lr-section-title">Who we&apos;re looking for</h2>
@@ -198,7 +201,7 @@ const ApplyForm = ({ content, orientation }) => {
         </section>
       )}
 
-      {/* Application form */}
+      {/* CATEGORY: APPLICATION FORM */}
       <section id="apply-form" className="lr-form-section">
         <div className="lr-form-head">
           <span className="lr-eyebrow">The application</span>
@@ -246,7 +249,7 @@ const ApplyForm = ({ content, orientation }) => {
               <Field label="Preferred name" name="PreferredName" error={errors.PreferredName}>
                 <input id="PreferredName" name="PreferredName" className="lr-input" maxLength={50} placeholder="What should others call you?" value={form.PreferredName || ""} onChange={onChange} />
               </Field>
-              <Field label="Preferred pronouns" name="PreferredPronouns" error={errors.PreferredPronouns}>
+              <Field label="Preferred pronouns" name="PreferredPronouns" error={errors.PreferredPronouns} required={false}>
                 <input id="PreferredPronouns" name="PreferredPronouns" className="lr-input" maxLength={15} placeholder="He / She / They / Sie" value={form.PreferredPronouns || ""} onChange={onChange} />
               </Field>
               <Field label="GW2 account ID" name="Gw2AccountId" error={errors.Gw2AccountId}>
