@@ -5,15 +5,19 @@ import Link from "next/link"
 // --- COMPONENTS ---
 const Brandmark = ({ className }) => (
   <span className={className}>
-    <span className="br">[</span>Liar<span className="br">]</span>
+    <span className="br">[</span>
+    Liar
+    <span className="br">]</span>
   </span>
 )
 
 const SiteHeader = () => (
   <header className="lr-header">
-    <Link href="/" className="lr-brand">
+    <Link href="/" className="lr-brand" aria-label="Liar home">
       <Brandmark className="lr-brand-mark" />
+
       <span className="lr-brand-divider" />
+
       <span className="lr-brand-sub">
         Liars, Cheats
         <br />
@@ -54,7 +58,11 @@ const SiteFooter = () => (
 const AppFrame = ({ children }) => (
   <div className="lr-shell">
     <SiteHeader />
-    <main className="lr-main">{children}</main>
+
+    <main className="lr-main">
+      {children}
+    </main>
+
     <SiteFooter />
   </div>
 )
