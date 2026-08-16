@@ -27,34 +27,101 @@ const referralOptions = Object.keys(referralQuestions)
 
 // CATEGORY: ICONS
 const AlertIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 9v4" /><path d="M12 17h.01" /><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 9v4" />
+    <path d="M12 17h.01" />
+    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
   </svg>
 )
+
 const CheckIcon = ({ size = 32, stroke = 2.6 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={stroke}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
     <path d="M20 6 9 17l-5-5" />
   </svg>
 )
+
 const UsersIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
   </svg>
 )
+
 const GlobeIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z" />
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M2 12h20" />
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z" />
   </svg>
 )
+
 const SparkIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
     <path d="M12 3l2.2 6.6L21 12l-6.8 2.4L12 21l-2.2-6.6L3 12l6.8-2.4z" />
   </svg>
 )
 
 const cardFor = (text) => {
-  if (/north american/i.test(text)) return { title: "North American servers", Icon: GlobeIcon }
-  if (/inclus|divers|women|lgbt|disab|ethnic|religio|background/i.test(text)) return { title: "Everyone's welcome", Icon: UsersIcon }
+  if (/north american/i.test(text)) {
+    return { title: "North American servers", Icon: GlobeIcon }
+  }
+
+  if (/inclus|divers|women|lgbt|disab|ethnic|religio|background/i.test(text)) {
+    return { title: "Everyone's welcome", Icon: UsersIcon }
+  }
+
   return { title: null, Icon: SparkIcon }
 }
 
@@ -64,11 +131,17 @@ const Field = ({ label, name, error, children, required = true }) => (
     <label className="lr-label" htmlFor={name}>
       {label} {required && <span className="req">*</span>}
     </label>
+
     {React.cloneElement(children, {
       "aria-invalid": error ? true : undefined,
       "aria-describedby": error ? `${name}-error` : undefined,
     })}
-    {error && <div className="lr-error" id={`${name}-error`}>{error}</div>}
+
+    {error && (
+      <div className="lr-error" id={`${name}-error`}>
+        {error}
+      </div>
+    )}
   </div>
 )
 
@@ -80,16 +153,28 @@ const ApplyForm = ({ content, orientation }) => {
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(null)
   const [mounted, setMounted] = useState(false)
+
   useEffect(() => setMounted(true), [])
 
   const timezoneOptions = useMemo(() => {
     const dto = DateTime.local()
+
     return Object.entries(zones)
-      .filter(([tz, v]) => Array.isArray(v) && DateTime.local().setZone(tz).isValid)
+      .filter(
+        ([tz, v]) =>
+          Array.isArray(v) && DateTime.local().setZone(tz).isValid
+      )
       .map(([tz]) => {
         const dt = dto.setZone(tz)
-        const value = `[UTC${dt.toFormat("Z")}] ${dt.zoneName.replace(/_/g, " ")}${dt.isInDST ? " (DST)" : ""}`
-        return { value, label: dt.zoneName.replace(/_/g, " ") }
+        const value = `[UTC${dt.toFormat("Z")}] ${dt.zoneName.replace(
+          /_/g,
+          " "
+        )}${dt.isInDST ? " (DST)" : ""}`
+
+        return {
+          value,
+          label: dt.zoneName.replace(/_/g, " "),
+        }
       })
       .sort((a, b) => a.label.localeCompare(b.label))
   }, [])
@@ -98,6 +183,7 @@ const ApplyForm = ({ content, orientation }) => {
     setForm((f) => ({ ...f, [name]: value }))
     setErrors((e) => ({ ...e, [name]: "" }))
   }
+
   const onChange = (e) => setField(e.target.name, e.target.value)
 
   const pickReferral = (value) => {
@@ -109,24 +195,41 @@ const ApplyForm = ({ content, orientation }) => {
   const validate = () => {
     const f = form
     const next = {}
+
     if (!f.PreferredName) next.PreferredName = "This field is required."
-    if (!f.Gw2AccountId) next.Gw2AccountId = "This field is required."
-    else if (!/\w+\.\d{4}/.test(f.Gw2AccountId)) next.Gw2AccountId = "Required format: AccountName.1234"
+
+    if (!f.Gw2AccountId) {
+      next.Gw2AccountId = "This field is required."
+    } else if (!/\w+\.\d{4}/.test(f.Gw2AccountId)) {
+      next.Gw2AccountId = "Required format: AccountName.1234"
+    }
+
     if (!f.DiscordId) next.DiscordId = "This field is required."
     if (!f.AboutMe) next.AboutMe = "This field is required."
     if (!f.LookingFor) next.LookingFor = "This field is required."
     if (!f.Timezone) next.Timezone = "This field is required."
-    if (!f.ReferredFrom) next.ReferredFrom = "Please pick one."
-    else if (!f.ReferralDetail) next.ReferralDetail = "This field is required."
+
+    if (!f.ReferredFrom) {
+      next.ReferredFrom = "Please pick one."
+    } else if (!f.ReferralDetail) {
+      next.ReferralDetail = "This field is required."
+    }
+
     return next
   }
 
   // CATEGORY: FORM SUBMISSION
   const onSubmit = async () => {
     const next = validate()
-    if (Object.keys(next).length) { setErrors(next); return }
+
+    if (Object.keys(next).length) {
+      setErrors(next)
+      return
+    }
+
     setSubmitting(true)
     setSubmitError(null)
+
     const payload = {
       PreferredName: form.PreferredName,
       PreferredPronouns: form.PreferredPronouns || "",
@@ -138,6 +241,7 @@ const ApplyForm = ({ content, orientation }) => {
       ReferredFrom: form.ReferredFrom,
       ReferralDetail: form.ReferralDetail,
     }
+
     try {
       await axios.post("/api/apply", payload)
       setSubmitted(true)
@@ -148,42 +252,89 @@ const ApplyForm = ({ content, orientation }) => {
     }
   }
 
-  const referralQuestion = form.ReferredFrom ? referralQuestions[form.ReferredFrom] : null
+  const referralQuestion = form.ReferredFrom
+    ? referralQuestions[form.ReferredFrom]
+    : null
 
   return (
     <>
       {/* CATEGORY: HERO SECTION */}
       <section className="lr-apply-hero">
         <div className="lr-hero-bg">
-          <Image src={background} alt="" fill priority placeholder="blur" sizes="100vw" style={{ objectFit: "cover" }} />
+          <Image
+            src={background}
+            alt=""
+            fill
+            priority
+            placeholder="blur"
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+          />
         </div>
+
         <div className="lr-apply-hero-fade" />
+
         <div className="lr-apply-hero-inner">
-          <span className="lr-badge"><AlertIcon /> Read this first</span>
+          <span className="lr-badge">
+            <AlertIcon /> Read this first
+          </span>
+
           <h1 className="lr-apply-title">Before you apply</h1>
+
           <p className="lr-apply-lead">
-            We recruit for character, not hours played. A few things worth knowing:
+            We recruit for character, not hours played. Here&apos;s what that
+            means in Liar.
           </p>
+
           <div className="lr-apply-cta">
-            <Link href="/#community" className="lr-btn lr-btn-lg lr-btn-ghost">About the guild</Link>
+            <Link
+              href="/#community"
+              className="lr-btn lr-btn-lg lr-btn-ghost"
+            >
+              About the guild
+            </Link>
           </div>
         </div>
       </section>
 
       {/* CATEGORY: MISSION SECTION */}
       <section className="lr-apply-about">
-        <span className="lr-eyebrow">Mission statement</span>
+        <span className="lr-eyebrow">Finding the right fit</span>
+
         <h2 className="lr-section-title">Who we&apos;re looking for</h2>
-        {content.lead && <p className="lr-mission-lead">{highlightTags(content.lead)}</p>}
+
+        <p className="lr-mission-lead">
+          You don&apos;t need a perfect build, thousands of hours, or a
+          particular skill level to belong here. We care more about how you
+          treat people, whether you&apos;re willing to be part of the
+          community, and whether Liar feels like a place you&apos;d actually
+          want to spend your time.
+        </p>
+
+        {content.lead && (
+          <p className="lr-mission-lead">
+            {highlightTags(content.lead)}
+          </p>
+        )}
+
         {content.cards.length > 0 && (
           <div className="lr-info-grid">
             {content.cards.map((text, i) => {
               const { title, Icon } = cardFor(text)
+
               return (
                 <div className="lr-info-card" key={i}>
-                  <div className="lr-info-icon"><Icon /></div>
-                  {title && <h3 className="lr-info-title">{title}</h3>}
-                  <p className="lr-info-text">{highlightTags(text)}</p>
+                  <div className="lr-info-icon">
+                    <Icon />
+                  </div>
+
+                  {title && (
+                    <h3 className="lr-info-title">{title}</h3>
+                  )}
+
+                  <p className="lr-info-text">
+                    {highlightTags(text)}
+                  </p>
                 </div>
               )
             })}
@@ -191,15 +342,49 @@ const ApplyForm = ({ content, orientation }) => {
         )}
       </section>
 
+      {/* CATEGORY: ACTIVITIES SECTION */}
       {content.activities.length > 0 && (
         <section className="lr-activities">
-          <span className="lr-eyebrow">What we get up to</span>
-          <h2 className="lr-section-title">Activities</h2>
+          <span className="lr-eyebrow">Life in Liar</span>
+
+          <h2 className="lr-section-title">
+            There&apos;s usually something going on
+          </h2>
+
+          <p className="lr-mission-lead">
+            Some nights are organized events. Others begin because a few
+            people jump in, form a group, and decide where the adventure goes
+            next. We play across Guild Wars together, whether that means
+            tackling group content, exploring Tyria, chasing achievements, or
+            simply helping someone with whatever they&apos;re working on.
+          </p>
+
           <div className="lr-tags">
-            {content.activities.map((a) => <span className="lr-tag" key={a}>{a}</span>)}
+            {content.activities.map((a) => (
+              <span className="lr-tag" key={a}>
+                {a}
+              </span>
+            ))}
           </div>
         </section>
       )}
+
+      {/* CATEGORY: COMMUNITY EXPECTATION */}
+      <section className="lr-apply-about">
+        <span className="lr-eyebrow">One last thing</span>
+
+        <h2 className="lr-section-title">
+          Come as you are. Participate when you can.
+        </h2>
+
+        <p className="lr-mission-lead">
+          We don&apos;t expect Liar to become your second job. We do hope
+          you&apos;ll get to know people, join the community when you can, and
+          help keep it a place others want to return to. Respect the people
+          around you, bring a good attitude, and the rest can be learned along
+          the way.
+        </p>
+      </section>
 
       {/* CATEGORY: APPLICATION FORM */}
       <section id="apply-form" className="lr-form-section">
@@ -207,97 +392,296 @@ const ApplyForm = ({ content, orientation }) => {
           <span className="lr-eyebrow">The application</span>
           <h2 className="lr-section-title">Ready to Join?</h2>
           <p>
-            Tell us a bit about who you are and what you're looking for in a guild. After submitting this form, you'll receive instructions to connect with us on Discord.
+            Tell us a bit about who you are and what you're looking for in a guild.
+            After submitting this form, you'll receive instructions to connect
+            with us on Discord.
           </p>
         </div>
 
         {submitted ? (
           <div className="lr-success">
-            <div className="lr-success-check"><CheckIcon /></div>
+            <div className="lr-success-check">
+              <CheckIcon />
+            </div>
+
             <h3>Application submitted</h3>
-            <p className="lr-success-sub">Nice to meet you. There are just a couple steps left.</p>
+
+            <p className="lr-success-sub">
+              Nice to meet you. There are just a couple steps left.
+            </p>
+
             <div className="lr-success-steps">
               <div className="lr-success-step done">
-                <span className="lr-success-badge filled"><CheckIcon size={16} stroke={3} /></span>
+                <span className="lr-success-badge filled">
+                  <CheckIcon size={16} stroke={3} />
+                </span>
+
                 <div>
-                  <div className="lr-success-step-title">Application sent</div>
-                  <div className="lr-success-step-desc">We&apos;ve got your details.</div>
+                  <div className="lr-success-step-title">
+                    Application sent
+                  </div>
+                  <div className="lr-success-step-desc">
+                    We&apos;ve got your details.
+                  </div>
                 </div>
               </div>
+
               <div className="lr-success-step">
                 <span className="lr-success-badge hollow">2</span>
+
                 <div>
-                  <div className="lr-success-step-title">Connect on Discord</div>
-                  <div className="lr-success-step-desc">Join our <a href={DISCORD_URL} target="_blank" rel="noopener">Discord server</a> so we can reach you.</div>
+                  <div className="lr-success-step-title">
+                    Connect on Discord
+                  </div>
+
+                  <div className="lr-success-step-desc">
+                    Join our{" "}
+                    <a
+                      href={DISCORD_URL}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Discord server
+                    </a>{" "}
+                    so we can reach you.
+                  </div>
                 </div>
               </div>
+
               <div className="lr-success-step">
                 <span className="lr-success-badge hollow">3</span>
+
                 <div>
-                  <div className="lr-success-step-title">Meet the guild</div>
-                  <div className="lr-success-step-desc">Attend the next orientation — {orientation ? <OrientationTime frontmatter={orientation} /> : "Sundays at 12:30 PM EDT"}.</div>
+                  <div className="lr-success-step-title">
+                    Meet the guild
+                  </div>
+
+                  <div className="lr-success-step-desc">
+                    Attend the next orientation —{" "}
+                    {orientation ? (
+                      <OrientationTime frontmatter={orientation} />
+                    ) : (
+                      "Sundays at 12:30 PM EDT"
+                    )}
+                    .
+                  </div>
                 </div>
               </div>
             </div>
-            <a href={DISCORD_URL} target="_blank" rel="noopener" className="lr-btn lr-btn-lg lr-btn-primary">
+
+            <a
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noopener"
+              className="lr-btn lr-btn-lg lr-btn-primary"
+            >
               <DiscordIcon size={19} /> Open our Discord
             </a>
           </div>
         ) : (
           <div className="lr-form-card">
             <div className="lr-field-grid">
-              <Field label="Preferred name" name="PreferredName" error={errors.PreferredName}>
-                <input id="PreferredName" name="PreferredName" className="lr-input" maxLength={50} placeholder="What should others call you?" value={form.PreferredName || ""} onChange={onChange} />
+              <Field
+                label="Preferred name"
+                name="PreferredName"
+                error={errors.PreferredName}
+              >
+                <input
+                  id="PreferredName"
+                  name="PreferredName"
+                  className="lr-input"
+                  maxLength={50}
+                  placeholder="What should others call you?"
+                  value={form.PreferredName || ""}
+                  onChange={onChange}
+                />
               </Field>
-              <Field label="Preferred pronouns" name="PreferredPronouns" error={errors.PreferredPronouns} required={false}>
-                <input id="PreferredPronouns" name="PreferredPronouns" className="lr-input" maxLength={15} placeholder="He / She / They / Sie" value={form.PreferredPronouns || ""} onChange={onChange} />
+
+              <Field
+                label="Preferred pronouns"
+                name="PreferredPronouns"
+                error={errors.PreferredPronouns}
+                required={false}
+              >
+                <input
+                  id="PreferredPronouns"
+                  name="PreferredPronouns"
+                  className="lr-input"
+                  maxLength={15}
+                  placeholder="He / She / They / Sie"
+                  value={form.PreferredPronouns || ""}
+                  onChange={onChange}
+                />
               </Field>
-              <Field label="GW2 account ID" name="Gw2AccountId" error={errors.Gw2AccountId}>
-                <input id="Gw2AccountId" name="Gw2AccountId" className="lr-input" maxLength={50} placeholder="AccountName.1234" value={form.Gw2AccountId || ""} onChange={onChange} />
+
+              <Field
+                label="GW2 account ID"
+                name="Gw2AccountId"
+                error={errors.Gw2AccountId}
+              >
+                <input
+                  id="Gw2AccountId"
+                  name="Gw2AccountId"
+                  className="lr-input"
+                  maxLength={50}
+                  placeholder="AccountName.1234"
+                  value={form.Gw2AccountId || ""}
+                  onChange={onChange}
+                />
               </Field>
-              <Field label="Discord username" name="DiscordId" error={errors.DiscordId}>
-                <input id="DiscordId" name="DiscordId" className="lr-input" maxLength={50} placeholder="yourname" value={form.DiscordId || ""} onChange={onChange} />
+
+              <Field
+                label="Discord username"
+                name="DiscordId"
+                error={errors.DiscordId}
+              >
+                <input
+                  id="DiscordId"
+                  name="DiscordId"
+                  className="lr-input"
+                  maxLength={50}
+                  placeholder="yourname"
+                  value={form.DiscordId || ""}
+                  onChange={onChange}
+                />
               </Field>
             </div>
 
-            <Field label="Tell us about yourself" name="AboutMe" error={errors.AboutMe}>
-              <textarea id="AboutMe" name="AboutMe" className="lr-textarea" maxLength={470} rows={4} placeholder="Your gaming background and play style…" value={form.AboutMe || ""} onChange={onChange} />
+            <Field
+              label="Tell us about yourself"
+              name="AboutMe"
+              error={errors.AboutMe}
+            >
+              <textarea
+                id="AboutMe"
+                name="AboutMe"
+                className="lr-textarea"
+                maxLength={470}
+                rows={4}
+                placeholder="Your gaming background and play style…"
+                value={form.AboutMe || ""}
+                onChange={onChange}
+              />
             </Field>
 
-            <Field label="What are you looking for in a guild?" name="LookingFor" error={errors.LookingFor}>
-              <textarea id="LookingFor" name="LookingFor" className="lr-textarea" maxLength={470} rows={4} placeholder="What matters most to you in a community…" value={form.LookingFor || ""} onChange={onChange} />
+            <Field
+              label="What are you looking for in a guild?"
+              name="LookingFor"
+              error={errors.LookingFor}
+            >
+              <textarea
+                id="LookingFor"
+                name="LookingFor"
+                className="lr-textarea"
+                maxLength={470}
+                rows={4}
+                placeholder="What matters most to you in a community…"
+                value={form.LookingFor || ""}
+                onChange={onChange}
+              />
             </Field>
 
-            <Field label="Your timezone" name="Timezone" error={errors.Timezone}>
-              <select id="Timezone" name="Timezone" className="lr-select" value={form.Timezone || ""} onChange={onChange}>
+            <Field
+              label="Your timezone"
+              name="Timezone"
+              error={errors.Timezone}
+            >
+              <select
+                id="Timezone"
+                name="Timezone"
+                className="lr-select"
+                value={form.Timezone || ""}
+                onChange={onChange}
+              >
                 <option value="">Select your timezone…</option>
-                {mounted && timezoneOptions.map((tz) => <option key={tz.value} value={tz.value}>{tz.label}</option>)}
+
+                {mounted &&
+                  timezoneOptions.map((tz) => (
+                    <option key={tz.value} value={tz.value}>
+                      {tz.label}
+                    </option>
+                  ))}
               </select>
             </Field>
 
-            <div className="lr-field" role="group" aria-labelledby="referred-label" aria-describedby={errors.ReferredFrom ? "ReferredFrom-error" : undefined}>
-              <span className="lr-label" id="referred-label">How did you hear about us? <span className="req">*</span></span>
+            <div
+              className="lr-field"
+              role="group"
+              aria-labelledby="referred-label"
+              aria-describedby={
+                errors.ReferredFrom ? "ReferredFrom-error" : undefined
+              }
+            >
+              <span className="lr-label" id="referred-label">
+                How did you hear about us? <span className="req">*</span>
+              </span>
+
               <div className="lr-chip-row">
                 {referralOptions.map((opt) => (
-                  <button type="button" key={opt} aria-pressed={form.ReferredFrom === opt} className={`lr-chip${form.ReferredFrom === opt ? " active" : ""}`} onClick={() => pickReferral(opt)}>
+                  <button
+                    type="button"
+                    key={opt}
+                    aria-pressed={form.ReferredFrom === opt}
+                    className={`lr-chip${
+                      form.ReferredFrom === opt ? " active" : ""
+                    }`}
+                    onClick={() => pickReferral(opt)}
+                  >
                     {opt}
                   </button>
                 ))}
               </div>
-              {errors.ReferredFrom && <div className="lr-error" id="ReferredFrom-error">{errors.ReferredFrom}</div>}
+
+              {errors.ReferredFrom && (
+                <div
+                  className="lr-error"
+                  id="ReferredFrom-error"
+                >
+                  {errors.ReferredFrom}
+                </div>
+              )}
             </div>
 
             {referralQuestion && (
-              <Field label={referralQuestion} name="ReferralDetail" error={errors.ReferralDetail}>
-                <input id="ReferralDetail" name="ReferralDetail" className="lr-input" maxLength={50} placeholder="A quick detail…" value={form.ReferralDetail || ""} onChange={onChange} />
+              <Field
+                label={referralQuestion}
+                name="ReferralDetail"
+                error={errors.ReferralDetail}
+              >
+                <input
+                  id="ReferralDetail"
+                  name="ReferralDetail"
+                  className="lr-input"
+                  maxLength={50}
+                  placeholder="A quick detail…"
+                  value={form.ReferralDetail || ""}
+                  onChange={onChange}
+                />
               </Field>
             )}
 
-            <button type="button" className="lr-submit" onClick={onSubmit} disabled={submitting}>
+            <button
+              type="button"
+              className="lr-submit"
+              onClick={onSubmit}
+              disabled={submitting}
+            >
               {submitting ? "Sending…" : "Submit application"}
             </button>
-            {submitError && <div className="lr-error" style={{ textAlign: "center", marginTop: 12 }}>{submitError}</div>}
-            <p className="lr-form-fineprint">By applying you agree to our zero-tolerance stance on toxicity and discrimination.</p>
+
+            {submitError && (
+              <div
+                className="lr-error"
+                style={{ textAlign: "center", marginTop: 12 }}
+              >
+                {submitError}
+              </div>
+            )}
+
+            <p className="lr-form-fineprint">
+              By applying you agree to our zero-tolerance stance on toxicity
+              and discrimination.
+            </p>
           </div>
         )}
       </section>
