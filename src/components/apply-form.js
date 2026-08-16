@@ -2,7 +2,6 @@
 
 // CATEGORY: EXTERNAL DEPENDENCIES
 import React, { useEffect, useMemo, useState } from "react"
-import Link from "next/link"
 import Image from "next/image"
 import axios from "axios"
 import tzdata from "tzdata"
@@ -285,15 +284,6 @@ const ApplyForm = ({ content, orientation }) => {
             We recruit for character, not hours played. Here&apos;s what that
             means in Liar.
           </p>
-
-          <div className="lr-apply-cta">
-            <Link
-              href="/#community"
-              className="lr-btn lr-btn-lg lr-btn-ghost"
-            >
-              About the guild
-            </Link>
-          </div>
         </div>
       </section>
 
