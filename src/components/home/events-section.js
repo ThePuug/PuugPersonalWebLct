@@ -68,8 +68,8 @@ const EventsSection = ({ events }) => {
     <section id="events" className="lr-section">
       <div className="lr-section-head">
         <div>
-          <span className="lr-eyebrow">Every Sunday</span>
-          <h2 className="lr-section-title">Weekly Events</h2>
+          <span className="lr-eyebrow">Every Week</span>
+          <h2 className="lr-section-title">Guild Events</h2>
         </div>
         <p className="lr-section-note">
           Here&apos;s what&apos;s on the calendar this week, shown in your local time.
